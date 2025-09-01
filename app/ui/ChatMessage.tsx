@@ -19,7 +19,7 @@ export const ChatMessage = ({
       className={cn("flex gap-3 p-4", isUser ? "justify-end" : "justify-start")}
     >
       {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center bg-yellow-100">
           <Bot className="w-4 h-4 text-primary" />
         </div>
       )}
@@ -57,7 +57,7 @@ export const ChatMessage = ({
       </div>
 
       {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center bg-pink-100">
           <User className="w-4 h-4 text-primary-foreground" />
         </div>
       )}

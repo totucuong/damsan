@@ -1,1 +1,5 @@
 @import 'tailwindcss';
+
+.bg-muted-foreground {
+  background-color: #4a3ac6;
+}
