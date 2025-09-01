@@ -79,13 +79,13 @@ export const ChatInterface = () => {
       {/* Header */}
       <div className="border-b border-border bg-background/50 backdrop-blur-sm p-4">
         <div className="max-w-4xl mx-auto flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center">
-            <MessageSquare className="w-4 h-4 text-primary-foreground" />
-          </div>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-r from-primary to-primary-glow flex items-center justify-center"></div>
           <div>
-            <h1 className="font-semibold text-foreground">AI Assistant</h1>
+            <h1 className="font-semibold text-foreground">DakiLife</h1>
             <p className="text-sm text-muted-foreground">
-              {isTyping ? "Typing..." : "Ready to help you with anything"}
+              {isTyping
+                ? "Typing..."
+                : "Ready to answer everything about your health history"}
             </p>
           </div>
         </div>
@@ -100,7 +100,7 @@ export const ChatInterface = () => {
                 <Sparkles className="w-8 h-8 text-primary-foreground" />
               </div>
               <h2 className="text-xl font-semibold mb-3 text-foreground">
-                Welcome to AI Assistant
+                Welcome to Daki Life
               </h2>
               <p className="text-muted-foreground mb-8">
                 Start a conversation by typing a message or try one of these

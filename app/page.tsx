@@ -1,7 +1,4 @@
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { ChatInput } from "@/components/ChatInput";
-import { ChatInterface } from "@/components/ChatInterface";
+import { ChatInterface } from "@/app/ui/ChatInterface";
 
 export default function Home() {
   return <ChatInterface />;
