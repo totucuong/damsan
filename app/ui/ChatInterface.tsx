@@ -27,7 +27,7 @@ const BOT_RESPONSES = [
   "Perfect! I love helping with creative and practical tasks like this one.",
 ];
 
-export const ChatInterface = () => {
+export function ChatInterface() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isTyping, setIsTyping] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
@@ -65,8 +65,8 @@ export const ChatInterface = () => {
       isUser: true,
       timestamp: new Date(),
     };
-// here should be were we send message to the serve
-// the easy way is to use Rest API
+    // here should be were we send message to the serve
+    // the easy way is to use Rest API
     setMessages((prev) => [...prev, userMessage]);
     simulateBotResponse(content);
   };
