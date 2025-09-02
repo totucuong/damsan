@@ -8,12 +8,12 @@ interface ChatMessageProps {
   isTyping?: boolean;
 }
 
-export const ChatMessage = ({
+export function ChatMessage({
   message,
   isUser,
   timestamp,
   isTyping = false,
-}: ChatMessageProps) => {
+}: ChatMessageProps) {
   return (
     <div
       className={cn("flex gap-3 p-4", isUser ? "justify-end" : "justify-start")}
@@ -63,4 +63,5 @@ export const ChatMessage = ({
       )}
     </div>
   );
-};
+}
+
