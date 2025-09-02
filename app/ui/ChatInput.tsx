@@ -9,10 +9,7 @@ interface ChatInputProps {
   disabled?: boolean;
 }
 
-export const ChatInput = ({
-  onSendMessage,
-  disabled = false,
-}: ChatInputProps) => {
+export function ChatInput({ onSendMessage, disabled = false }: ChatInputProps) {
   const [message, setMessage] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -67,4 +64,6 @@ export const ChatInput = ({
       </form>
     </div>
   );
-};
+}
+
+
