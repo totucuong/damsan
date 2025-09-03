@@ -1,7 +1,7 @@
 import { cn } from "@/lib/utils";
 import { Bot, User } from "lucide-react";
 
-interface ChatMessageProps {
+export interface ChatMessageProps {
   message: string;
   isUser: boolean;
   timestamp: Date;

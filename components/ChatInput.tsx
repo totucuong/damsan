@@ -8,12 +8,8 @@ interface ChatInputProps {
   onSendMessage: (message: string) => void;
 }
 
-export function ChatInput() {
+export function ChatInput({ onSendMessage }: ChatInputProps) {
   const [message, setMessage] = useState("");
-
-  function onSendMessage(message: string) {
-    console.log(message);
-  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
