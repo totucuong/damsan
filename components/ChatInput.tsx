@@ -6,15 +6,18 @@ import { Send, Paperclip } from "lucide-react";
 
 interface ChatInputProps {
   onSendMessage: (message: string) => void;
-  disabled?: boolean;
 }
 
-export function ChatInput({ onSendMessage, disabled = false }: ChatInputProps) {
+export function ChatInput() {
   const [message, setMessage] = useState("");
+
+  function onSendMessage(message: string) {
+    console.log(message);
+  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (message.trim() && !disabled) {
+    if (message.trim()) {
       onSendMessage(message.trim());
       setMessage("");
     }
@@ -28,7 +31,7 @@ export function ChatInput({ onSendMessage, disabled = false }: ChatInputProps) {
   };
 
   return (
-    <div className="border-t border-border bg-background/80 backdrop-blur-sm p-4">
+    <div className="bg-background/80 backdrop-blur-sm p-4">
       <form
         onSubmit={handleSubmit}
         className="flex gap-3 items-end max-w-4xl mx-auto"
@@ -49,15 +52,13 @@ export function ChatInput({ onSendMessage, disabled = false }: ChatInputProps) {
             onKeyDown={handleKeyDown}
             placeholder="Type your message..."
             className="min-h-[44px] max-h-32 resize-none bg-input border-chat-border focus:border-primary/50 rounded-2xl pr-12"
-            disabled={disabled}
           />
         </div>
 
         <Button
           type="submit"
           size="icon"
-          disabled={!message.trim() || disabled}
-          className="rounded-full bg-primary hover:bg-primary/90 shadow-md disabled:opacity-50"
+          className="rounded-full bg-primary hover:bg-primary/90 shadow-md"
         >
           <Send className="w-4 h-4" />
         </Button>
