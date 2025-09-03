@@ -65,7 +65,7 @@ export function ChatInterface() {
       isUser: true,
       timestamp: new Date(),
     };
-    // here should be were we send message to the serve
+    // @TODO: here should be were we send message to the serve
     // the easy way is to use Rest API
     setMessages((prev) => [...prev, userMessage]);
     simulateBotResponse(content);
