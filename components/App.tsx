@@ -27,13 +27,13 @@ export function App({ userId }: { userId: string }) {
     };
 
     return (
-        <div className="max-w-4xl mx-auto h-screen flex flex-col">
+        <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-y-auto">
             <h1 className="text-2xl font-bold p-4 border-b sticky top-0 bg-white z-10">Daki Life</h1>
-            <div className="flex-1 flex flex-col overflow-hidden">
-                <div className="flex-1 overflow-y-auto p-4">
+            <div className="flex-1 flex flex-col ">
+                <div className="flex-1 p-4">
                     <Memory memory={memory} />
                 </div>
-                <div className="border-t bg-white">
+                <div className=" bg-white">
                     <ChatInput onSendMessage={handleSendMessage} />
                 </div>
             </div>
