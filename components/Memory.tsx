@@ -1,12 +1,19 @@
 "use client";
-import { loadMemory } from "../lib/db";
+import { Message } from "../lib/db";
 import { ChatMessage } from "./ChatMessage";
+import { useRef, useEffect } from "react";
 
 // a memory is a list of messages
-export function Memory({ userId }: { userId: string }) {
-    // @TODO: load memory from the database and using
-    // streaming: https://nextjs.org/docs/app/getting-started/fetching-data#streaming
-    const memory = loadMemory(userId);
+export function Memory({ memory }: { memory: Message[] }) {
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [memory]);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+    };
     return (
         <div className="max-w-4xl mx-auto">
             {memory.map((message, index) => (
@@ -14,6 +21,7 @@ export function Memory({ userId }: { userId: string }) {
                     <ChatMessage message={message.message} isUser={message.isUser} timestamp={new Date()} />
                 </div>
             ))}
+            <div ref={messagesEndRef} />
         </div>
     );
 }

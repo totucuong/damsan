@@ -1,4 +1,4 @@
-interface Message {
+export interface Message {
     isUser: boolean;
     message: string;
     isTyping: boolean;
