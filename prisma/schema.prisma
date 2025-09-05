@@ -1,0 +1,47 @@
+datasource db {
+    provider  = "postgresql"
+    url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+    directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+model User {
+    id        String    @id @default(uuid())
+    email     String    @unique
+    firstname String
+    lastname  String
+    messages  Message[]
+    File      File[]
+
+    @@map("users")
+}
+
+enum MessageType {
+    HUMAN
+    BOT
+}
+
+model Message {
+    id      String      @id @default(uuid())
+    message String
+    type    MessageType
+    userId  String
+    user    User        @relation(fields: [userId], references: [id])
+    File    File[]
+
+    @@map("messages")
+}
+
+model File {
+    id         String  @id @default(uuid())
+    url        String
+    owner_id   String
+    message_id String
+    owner      User    @relation(fields: [owner_id], references: [id])
+    message    Message @relation(fields: [message_id], references: [id])
+
+    @@map("files")
+}
