@@ -44,7 +44,7 @@ export async function createUser(email: string, firstname: string, lastname: str
 // async function main() {
 //     // const user = await createUser("totucuong@gmail.com", "Cuong", "To");
 //     await saveMessage({
-//         message: "Who am I?",
+//         message: "Who am I ?",
 //         isUser true,
 //         isTyping: false
 //     } satisfies Message, "8d3e9345-e1e9-459c-b453-9fc229a9511f");
