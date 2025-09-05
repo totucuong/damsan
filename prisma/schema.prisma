@@ -14,6 +14,7 @@ model User {
     firstname String
     lastname  String
     messages  Message[]
+    File      File[]
 
     @@map("users")
 }
@@ -27,8 +28,20 @@ model Message {
     id      String      @id @default(uuid())
     message String
     type    MessageType
+    userId  String
     user    User        @relation(fields: [userId], references: [id])
-    userId  String // foreign key field
+    File    File[]
 
     @@map("messages")
+}
+
+model File {
+    id         String  @id @default(uuid())
+    url        String
+    owner_id   String
+    message_id String
+    owner      User    @relation(fields: [owner_id], references: [id])
+    message    Message @relation(fields: [message_id], references: [id])
+
+    @@map("files")
 }
