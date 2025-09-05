@@ -1,3 +1,5 @@
+import { PrismaClient } from "@prisma/client";
+
 export interface Message {
     isUser: boolean;
     message: string;
