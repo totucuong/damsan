@@ -10,7 +10,19 @@ export interface Message {
 
 const prisma = new PrismaClient();
 
-
+export async function loadMessages(userId: string): Promise<Message[]> {
+    return prisma.message.findMany({
+        where: {
+            userId: userId
+        }
+    }).then((messages) => {
+        return messages.map((message) => ({
+            isUser: message.type === "HUMAN",
+            message: message.message,
+            isTyping: false
+        }));
+    });
+}
 export async function saveMessage(message: Message, userId: string) {
     await prisma.message.create({
         data: {
