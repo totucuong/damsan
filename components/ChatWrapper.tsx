@@ -10,11 +10,13 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
     const [memory, setMemory] = useState<Message[]>(messages);
 
     const handleSendMessage = async (message: string, selectedFiles?: File[]) => {
+
         const newMessage: Message = {
             isUser: true,
             message: message,
             timestamp: (new Date()),
-            isTyping: false
+            isTyping: false,
+            ...(selectedFiles?.length && { files: selectedFiles })
         };
         setMemory(prev => [...prev, newMessage]);
 
