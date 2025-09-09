@@ -20,4 +20,5 @@ export async function uploadFile(file: File) {
     } else {
         console.log('File uploaded successfully:', data)
     }
+    return data
 }
