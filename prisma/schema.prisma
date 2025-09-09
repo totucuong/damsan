@@ -10,10 +10,10 @@ generator client {
 }
 
 model User {
-    id        String    @id @default(uuid())
+    id        String    @id
     email     String    @unique
-    firstname String
-    lastname  String
+    firstname String?
+    lastname  String?
     messages  Message[]
     File      File[]
 
@@ -26,12 +26,13 @@ enum MessageType {
 }
 
 model Message {
-    id      String      @id @default(uuid())
-    message String
-    type    MessageType
-    userId  String
-    user    User        @relation(fields: [userId], references: [id])
-    File    File[]
+    id        String      @id @default(uuid())
+    message   String
+    timestamp DateTime
+    type      MessageType
+    userId    String
+    user      User        @relation(fields: [userId], references: [id])
+    File      File[]
 
     @@map("messages")
 }

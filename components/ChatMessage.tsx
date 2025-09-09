@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Bot, Brain, User } from "lucide-react";
+import { Brain, User } from "lucide-react";
 
 export interface ChatMessageProps {
   message: string;
