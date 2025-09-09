@@ -2,12 +2,12 @@
 import { ChatInput } from "./ChatInput";
 import { Memory } from "./Memory";
 import { useState } from "react";
-import { loadMemory, Message } from "../lib/db";
+import { Message } from "../lib/db";
 import Image from "next/image";
 export function ChatWrapper({ userId, messages }: { userId: string; messages: Message[] }) {
     const [memory, setMemory] = useState<Message[]>(messages);
 
-    const handleSendMessage = (message: string) => {
+    const handleSendMessage = (message: string, selectedFiles?: File[]) => {
         const newMessage: Message = {
             isUser: true,
             message: message,
@@ -20,10 +20,11 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
         setTimeout(() => {
             const aiResponse: Message = {
                 isUser: false,
-                message: "I received your message: " + message,
+                message: "I have read your messages and files: " + message + "\n" + selectedFiles?.map(file => file.name).join(", "),
                 isTyping: false
             };
             setMemory(prev => [...prev, aiResponse]);
+            console.log('processing files: ', selectedFiles)
         }, 1000);
     };
 
@@ -37,7 +38,8 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
                     height={120}
                     className="rounded"
                 />
-                <h1 className="font-mono font-bold text-2xl">Damsan.Life</h1>
+                {/* <h1 className="font-mono font-bold text-2xl">Damsan.Life</h1> */}
+                <h1 className="font-mono font-semibold">Welcome back {userId}!</h1>
             </div>
             <div className="flex-1 flex flex-col ">
                 <div className="flex-1 p-4">
