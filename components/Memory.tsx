@@ -18,7 +18,7 @@ export function Memory({ memory }: { memory: Message[] }) {
         <div className="max-w-4xl mx-auto">
             {memory.map((message, index) => (
                 <div key={index}>
-                    <ChatMessage message={message.message} isUser={message.isUser} timestamp={new Date()} />
+                    <ChatMessage message={message.message} isUser={message.isUser} timestamp={message.timestamp} />
                 </div>
             ))}
             <div ref={messagesEndRef} />
