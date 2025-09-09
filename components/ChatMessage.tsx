@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Bot, User } from "lucide-react";
+import { Bot, Brain, User } from "lucide-react";
 
 export interface ChatMessageProps {
   message: string;
@@ -20,7 +20,7 @@ export function ChatMessage({
     >
       {!isUser && (
         <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center bg-yellow-100">
-          <Bot className="w-4 h-4 text-primary" />
+          <Brain className="w-4 h-4 text-primary" />
         </div>
       )}
 

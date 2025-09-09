@@ -5,7 +5,6 @@ import { useState } from "react";
 import { loadMemory, Message } from "../lib/db";
 import Image from "next/image";
 export function ChatWrapper({ userId, messages }: { userId: string; messages: Message[] }) {
-    // const [memory, setMemory] = useState<Message[]>(loadMemory(userId));
     const [memory, setMemory] = useState<Message[]>(messages);
 
     const handleSendMessage = (message: string) => {
@@ -30,15 +29,15 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
 
     return (
         <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-y-auto">
-            <div className="flex items-center gap-3 p-4 border-b sticky top-0 bg-white z-10">
+            <div className="flex items-center gap-1 p-4 sticky top-0 bg-white z-10">
                 <Image
-                    src="/daki_logo.png"
-                    alt="Daki Life Logo"
+                    src="/damsan_01.png"
+                    alt="Damsan.Life Logo"
                     width={120}
                     height={120}
                     className="rounded"
                 />
-                <h1 className="text-2xl font-bold">Daki Life</h1>
+                <h1 className="font-mono font-bold text-2xl">Damsan.Life</h1>
             </div>
             <div className="flex-1 flex flex-col ">
                 <div className="flex-1 p-4">
