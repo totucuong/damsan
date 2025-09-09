@@ -39,7 +39,7 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
                     className="rounded"
                 />
                 {/* <h1 className="font-mono font-bold text-2xl">Damsan.Life</h1> */}
-                <h1 className="font-mono font-semibold">Welcome back {userId}!</h1>
+                <h1 className="font-mono text-3xl">Welcome back {userId}!</h1>
             </div>
             <div className="flex-1 flex flex-col ">
                 <div className="flex-1 p-4">
