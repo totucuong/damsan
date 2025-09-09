@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { uploadFile } from "./storage";
 
 export interface Message {
     id?: string; // Optional since new messages won't have an ID yet
@@ -48,6 +49,7 @@ export async function saveMessages(messages: Message[], userId: string) {
                     message.files.map(async (file) => {
                         // For now, we'll store a placeholder URL - in production you'd upload to cloud storage
                         const fileUrl = `uploads/${Date.now()}_${file.name}`;
+                        await uploadFile(file);
 
                         return await prisma.file.create({
                             data: {
