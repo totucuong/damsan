@@ -47,16 +47,18 @@ export async function saveMessages(messages: Message[], userId: string) {
             if (message.files && message.files.length > 0) {
                 await Promise.all(
                     message.files.map(async (file) => {
-                        // For now, we'll store a placeholder URL - in production you'd upload to cloud storage
-                        const fileData = await uploadFile(file);
-
-                        return await prisma.file.create({
-                            data: {
-                                url: fileData?.path!,
-                                owner_id: userId,
-                                message_id: createdMessage.id
-                            }
-                        });
+                        try {
+                            const fileData = await uploadFile(file);
+                            return await prisma.file.create({
+                                data: {
+                                    url: fileData.fullPath,
+                                    owner_id: userId,
+                                    message_id: createdMessage.id
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Failed to upload file:', error)
+                        }
                     })
                 );
             }

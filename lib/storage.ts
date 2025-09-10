@@ -16,9 +16,7 @@ export async function uploadFile(file: File) {
 
     const { data, error } = await supabase.storage.from(process.env.SUPABASE_BUCKET!).upload(`${user.id} / ${file.name}`, file)
     if (error) {
-        console.error('Failed to upload file:', error)
-    } else {
-        console.log('File uploaded successfully:', data)
+        throw new Error('Failed to upload file: ' + error.message)
     }
     return data
 }
