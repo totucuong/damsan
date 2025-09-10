@@ -4,7 +4,6 @@ import { Memory } from "./Memory";
 import { useState } from "react";
 import { Message } from "../lib/db";
 import { saveMessages } from "../lib/actions";
-import { analyzeImageFile } from "@/lib/image";
 import { analyzeFiles } from "../lib/actions";
 import Image from "next/image";
 
@@ -35,8 +34,7 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
 
             // Use server action to save messages
             try {
-                // @TODO: uncomment to save messages
-                // await saveMessages([newMessage, aiResponse], userId);
+                await saveMessages([newMessage, aiResponse], userId);
                 if (selectedFiles && selectedFiles?.length > 0) {
                     const results = await analyzeFiles(selectedFiles);
                     setMemory(prev => [...prev, ...results.map(result => ({
