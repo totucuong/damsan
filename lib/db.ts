@@ -18,7 +18,8 @@ export async function loadMessages(userId: string): Promise<Message[]> {
     return prisma.message.findMany({
         where: {
             userId: userId
-        }
+        },
+        orderBy: { timestamp: 'asc' }
     }).then((messages) => {
         return messages.map((message) => ({
             isUser: message.type === "HUMAN",
