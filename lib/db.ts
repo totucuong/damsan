@@ -1,4 +1,5 @@
 import { PrismaClient } from "@prisma/client";
+import { uploadFile } from "./storage";
 
 export interface Message {
     id?: string; // Optional since new messages won't have an ID yet
@@ -46,16 +47,18 @@ export async function saveMessages(messages: Message[], userId: string) {
             if (message.files && message.files.length > 0) {
                 await Promise.all(
                     message.files.map(async (file) => {
-                        // For now, we'll store a placeholder URL - in production you'd upload to cloud storage
-                        const fileUrl = `uploads/${Date.now()}_${file.name}`;
-
-                        return await prisma.file.create({
-                            data: {
-                                url: fileUrl,
-                                owner_id: userId,
-                                message_id: createdMessage.id
-                            }
-                        });
+                        try {
+                            const fileData = await uploadFile(file);
+                            return await prisma.file.create({
+                                data: {
+                                    url: fileData.fullPath,
+                                    owner_id: userId,
+                                    message_id: createdMessage.id
+                                }
+                            });
+                        } catch (error) {
+                            console.error('Failed to upload file:', error)
+                        }
                     })
                 );
             }
@@ -64,44 +67,3 @@ export async function saveMessages(messages: Message[], userId: string) {
         })
     );
 }
-
-
-// export async function saveMessage(message: Message, userId: string) {
-//     await prisma.message.create({
-//         data: {
-//             message: message.message,
-//             type: message.isUser ? "HUMAN" : "BOT",
-//             timestamp: message.timestamp,
-//             userId: userId
-//         }
-//     });
-// }
-// export async function createUser(email: string, firstname: string, lastname: string) {
-//     return prisma.user.create({
-//         data: {
-//             email,
-//             firstname,
-//             lastname
-//         }
-//     });
-// }
-// uncomment and exexcute with "npx tsx lib/db.ts"
-// async function main() {
-//     // const user = await createUser("totucuong@gmail.com", "Cuong", "To");
-//     await saveMessage({
-//         message: "Who am I ?",
-//         isUser true,
-//         isTyping: false
-//     } satisfies Message, "8d3e9345-e1e9-459c-b453-9fc229a9511f");
-// }
-
-
-// const memory: Record<string, Message[]> = {
-//     "user_1":
-//         [{ "isUser": true, "message": "Which medicines have I taken today?", isTyping: false },
-//         { "isUser": false, "message": "you have taken paracetamol", isTyping: false },]
-// };
-
-// export function loadMemory(userId: string) {
-//     return memory[userId];
-// }
