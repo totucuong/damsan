@@ -49,6 +49,9 @@ export async function saveMessages(messages: Message[], userId: string) {
                     message.files.map(async (file) => {
                         try {
                             const fileData = await uploadFile(file);
+                            console.log('fullpath: ', fileData.fullPath)
+                            console.log('path: ', fileData.path)
+                            console.log('id: ', fileData.id)
                             return await prisma.file.create({
                                 data: {
                                     url: fileData.fullPath,

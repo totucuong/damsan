@@ -1,0 +1,3 @@
+export const prompt = {
+    gpt4oMini: `Analyze this image and extract structured information about it. Provide a detailed description, identify objects, extract any text, note dominant colors, assess the mood, generate relevant tags, count people, and identify the location type if possible. Return the response as a valid JSON object with the following structure: {"description": string, "objects": string[], "text": string (optional), "colors": string[], "mood": string, "tags": string[], "people_count": number, "location_type": string (optional)}"`,
+}

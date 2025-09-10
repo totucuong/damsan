@@ -4,6 +4,7 @@ import { Memory } from "./Memory";
 import { useState } from "react";
 import { Message } from "../lib/db";
 import { saveMessages } from "../lib/actions";
+import { analyzeImageFile } from "@/lib/image";
 import Image from "next/image";
 
 export function ChatWrapper({ userId, messages }: { userId: string; messages: Message[] }) {
@@ -34,6 +35,11 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
             // Use server action to save messages
             try {
                 await saveMessages([newMessage, aiResponse], userId);
+                // @TODO: analyze all files not just a file
+                if (selectedFiles && selectedFiles?.length > 0) {
+                    const results = await analyzeImageFile(selectedFiles[0]);
+                    console.log('results: ', results)
+                }
             } catch (error) {
                 console.error('Failed to save messages:', error);
             }
