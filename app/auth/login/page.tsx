@@ -9,9 +9,13 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import Image from "next/image"
 export default function LoginPage() {
     return (
-        <div className="flex min-h-svh w-full items-center justify-center p-6 md:p-10">
+        <div className="flex flex-col min-h-svh w-full items-center justify-center p-6 md:p-10">
+            <div className="mb-6">
+                <Image src="/logo.png" alt="Damsan.Life Logo" width={100} height={100} />
+            </div>
             <div className="w-full max-w-sm">
                 <Card>
                     <CardHeader>
@@ -27,7 +31,6 @@ export default function LoginPage() {
                                         id="email"
                                         name="email"
                                         type="email"
-                                        placeholder="m@example.com"
                                         required
                                     />
                                 </div>
@@ -38,10 +41,10 @@ export default function LoginPage() {
                                     <Input id="password" name="password" type="password" required />
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <Button className="w-full bg-blue-400 border-blue-400" formAction={login}>
+                                    <Button className="w-full" formAction={login}>
                                         Login
                                     </Button>
-                                    <Button className="w-full  border-gray-500" formAction={signup}>Sign up</Button>
+                                    <Button className="w-full " formAction={signup}>Sign up</Button>
                                 </div>
                             </div>
                         </form>

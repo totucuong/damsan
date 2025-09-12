@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { Brain, User } from "lucide-react";
+import { Dog, User } from "lucide-react";
 
 export interface ChatMessageProps {
   message: string;
@@ -19,8 +19,8 @@ export function ChatMessage({
       className={cn("flex gap-3 p-4", isUser ? "justify-end" : "justify-start")}
     >
       {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center bg-yellow-100">
-          <Brain className="w-4 h-4 text-primary" />
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
+          <Dog className="w-4 h-4 text-primary" />
         </div>
       )}
 
@@ -57,7 +57,7 @@ export function ChatMessage({
       </div>
 
       {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center bg-pink-100">
+        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
           <User className="w-4 h-4 text-primary-foreground" />
         </div>
       )}
