@@ -1,4 +1,4 @@
-import { login, signup } from '@/app/auth/login/actions'
+import { login } from '@/app/auth/login/actions'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Input } from '@/components/ui/input'
@@ -45,9 +45,8 @@ export default function LoginPage() {
                                     <Button className="w-full" formAction={login}>
                                         Login
                                     </Button>
-                                    {/* <Button className="w-full " formAction={signup}>Sign up</Button> */}
                                     <p className="text-center text-sm text-muted-foreground">
-                                        Don't have an account yet?{' '}
+                                        Don't have an account yet?
                                         <Link href="/auth/signup" className="underline underline-offset-4">
                                             Sign up here
                                         </Link>
