@@ -12,5 +12,6 @@ export default async function Home() {
   }
 
 
+
   return <App userId={data.user.id} />;
 }
