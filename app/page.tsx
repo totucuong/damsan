@@ -19,12 +19,12 @@ export default function Home() {
           <span className={`${orbitron.className} text-lg font-bold tracking-wide uppercase`}>Damsan <Heart className="w-4 h-4" /> life</span>
         </div>
         <div className="flex items-center gap-3">
-          <Link href="/auth/login" className="text-sm text-slate-600 hover:text-slate-900">
+          {/* <Link href="/auth/login" className="text-sm text-slate-600 hover:text-slate-900">
             Log in
-          </Link>
-          <Button asChild>
+          </Link> */}
+          {/* <Button asChild>
             <Link href="/auth/signup">Join the waitlist</Link>
-          </Button>
+          </Button> */}
         </div>
       </header>
 
@@ -37,14 +37,14 @@ export default function Home() {
             Damsan helps you capture and organize medical records and keep
             track of medicines you have taken — fast, private, and effortless.
           </p>
-          {/* <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" asChild>
               <Link href="/auth/signup">Join the waitlist</Link>
             </Button>
-            <Button size="lg" variant="outline" asChild>
+            {/* <Button size="lg" variant="outline" asChild>
               <Link href="/app">I already have access</Link>
-            </Button>
-          </div> */}
+            </Button> */}
+          </div>
         </div>
 
         <div className="mt-16 grid place-items-center">
