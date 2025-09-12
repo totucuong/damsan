@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import { orbitron } from "@/lib/fonts";
 
 export const metadata = {
   title: "Damsan.life — Your Health Companion",
@@ -15,7 +16,7 @@ export default function Home() {
       <header className="container mx-auto px-6 py-6 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <Image src="/logo.png" alt="Damsan.life" width={64} height={64} />
-          <span className="text-lg font-bold">Damsan <Heart className="w-4 h-4" /> life</span>
+          <span className={`${orbitron.className} text-lg font-bold tracking-wide uppercase`}>Damsan <Heart className="w-4 h-4" /> life</span>
         </div>
         <div className="flex items-center gap-3">
           <Link href="/auth/login" className="text-sm text-slate-600 hover:text-slate-900">
@@ -29,7 +30,7 @@ export default function Home() {
 
       <section className="container mx-auto px-6 pt-12 pb-20 text-center">
         <div className="mx-auto max-w-3xl">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-900">
+          <h1 className={`${orbitron.className} text-4xl sm:text-5xl font-bold tracking-wide text-slate-900`}>
             Your health companion powered by AI
           </h1>
           <p className="mt-5 text-lg text-slate-600">
