@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, User } from "@prisma/client";
 import { uploadFile } from "./storage";
 
 export interface Message {
@@ -10,9 +10,15 @@ export interface Message {
     files?: File[];
 }
 
-
-
 const prisma = new PrismaClient();
+
+export async function loadProfile(userId: string): Promise<User> {
+    return prisma.user.findUniqueOrThrow({
+        where: {
+            id: userId
+        }
+    });
+}
 
 export async function loadMessages(userId: string): Promise<Message[]> {
     return prisma.message.findMany({

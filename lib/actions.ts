@@ -1,12 +1,16 @@
 'use server'
 
-import { loadMessages, saveMessages as dbSaveMessages, Message } from "./db";
+import { loadMessages, saveMessages as dbSaveMessages, Message, loadProfile } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
 import { analyzeImageFile } from "./image";
 
 
 export async function getMessages(userId: string) {
     return loadMessages(userId);
+}
+
+export async function getProfile(userId: string) {
+    return loadProfile(userId);
 }
 
 export async function saveMessages(messages: Message[], userId: string) {
