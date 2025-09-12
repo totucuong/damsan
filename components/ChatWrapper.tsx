@@ -26,17 +26,16 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
     };
 
     return (
-        <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-y-auto">
-            <div className="flex items-center gap-1 p-4 sticky top-0 z-10">
+        <div className="max-w-dvw mx-auto h-screen flex overflow-y-auto">
+            <div className="flex flex-col gap-1 p-4 sticky top-0 z-10">
                 <Image
                     src="/logo.png"
                     alt="Damsan.Life Logo"
-                    width={120}
-                    height={120}
+                    width={80}
+                    height={80}
                     className="rounded"
                 />
-                {/* <h1 className="font-mono font-bold text-2xl">Damsan.Life</h1> */}
-                <h1 className="font-mono text-3xl">Welcome back!</h1>
+                <h1 className="font-mono text-xl">Welcome back!</h1>
             </div>
             <div className="flex-1 flex flex-col ">
                 <div className="flex-1 p-4">
