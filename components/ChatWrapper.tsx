@@ -35,14 +35,14 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
     };
 
     return (
-        <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-y-auto">
-            <div className="sticky top-0 z-50 flex items-center justify-between px-4 py-3 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-hidden">
+            <div className="fixed top-0 left-0 right-0 z-50 h-14 flex items-center justify-between px-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
                 <div className="flex items-center gap-3">
                     <Image
                         src="/logo.png"
                         alt="Damsan.Life Logo"
-                        width={40}
-                        height={40}
+                        width={32}
+                        height={32}
                         className="rounded"
                     />
                     <h1 className="font-mono text-xl">Welcome back!</h1>
@@ -51,7 +51,7 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
                     Sign out
                 </Button>
             </div>
-            <div className="flex-1 flex flex-col ">
+            <div className="flex-1 flex flex-col overflow-y-auto pt-14">
                 <div className="flex-1 p-4">
                     <Memory memory={memory} />
                 </div>
