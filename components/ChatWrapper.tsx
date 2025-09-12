@@ -29,7 +29,7 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
         <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-y-auto">
             <div className="flex items-center gap-1 p-4 sticky top-0 bg-white z-10">
                 <Image
-                    src="/damsan_01.png"
+                    src="/logo.png"
                     alt="Damsan.Life Logo"
                     width={120}
                     height={120}
