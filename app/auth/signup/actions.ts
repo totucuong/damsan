@@ -38,6 +38,7 @@ export async function signup(formData: FormData) {
         redirect(`/error?message=${'Email already registered'}`)
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+    revalidatePath('/app', 'layout')
+    redirect('/app')
 }
+

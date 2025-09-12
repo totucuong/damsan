@@ -21,6 +21,6 @@ export async function login(formData: FormData) {
         redirect(`/error?message=${error.code}`)
     }
 
-    revalidatePath('/', 'layout')
-    redirect('/')
+    revalidatePath('/app', 'layout')
+    redirect('/app')
 }
