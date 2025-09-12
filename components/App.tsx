@@ -1,6 +1,7 @@
 import { ChatWrapper } from "./ChatWrapper";
 import { loadMessages } from "@/lib/db";
-export default async function App({ userId }: { userId: string }) {
-    const messages = await loadMessages(userId);
-    return <ChatWrapper userId={userId} messages={messages} />;
+import { User } from "@supabase/supabase-js";
+export default async function App({ user }: { user: User }) {
+    const messages = await loadMessages(user!.id);
+    return <ChatWrapper {...{ user, messages }} />;
 }

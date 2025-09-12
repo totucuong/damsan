@@ -1,16 +1,21 @@
 "use client";
 import { ChatInput } from "./ChatInput";
 import { Memory } from "./Memory";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Message } from "../lib/db";
 import { processUserMessage } from "../lib/actions";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import { User } from "@supabase/supabase-js";
+import { getProfile } from "../lib/actions";
 
-export function ChatWrapper({ userId, messages }: { userId: string; messages: Message[] }) {
+
+
+export function ChatWrapper({ user, messages }: { user: User; messages: Message[] }) {
     const [memory, setMemory] = useState<Message[]>(messages);
+    const [welcome, setWelcome] = useState<string>("");
     const router = useRouter();
 
     const handleSignOut = async () => {
@@ -18,6 +23,14 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
         await supabase.auth.signOut();
         router.push('/auth/login');
     };
+
+    useEffect(() => {
+        const compute_welcome_message = async () => {
+            const profile = await getProfile(user.id);
+            setWelcome(`Welcome back ${profile.firstname}!`);
+        };
+        compute_welcome_message();
+    }, []);
 
     const handleSendMessage = async (message: string, selectedFiles?: File[]) => {
 
@@ -29,10 +42,11 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
             ...(selectedFiles?.length && { files: selectedFiles })
         };
         setMemory(prev => [...prev, newMessage]);
-        const reponse_messages = await processUserMessage(newMessage, userId, selectedFiles);
+        const reponse_messages = await processUserMessage(newMessage, user.id, selectedFiles);
         setMemory(prev => [...prev, ...reponse_messages]);
 
     };
+
 
     return (
         <div className="max-w-dvw mx-auto h-screen flex flex-col overflow-hidden">
@@ -45,7 +59,9 @@ export function ChatWrapper({ userId, messages }: { userId: string; messages: Me
                         height={32}
                         className="rounded"
                     />
-                    <h1 className="font-mono text-xl">Welcome back!</h1>
+                    <h1 className="font-mono text-xl">
+                        {welcome || `Welcome back ${user.email}!`}
+                    </h1>
                 </div>
                 <Button variant="ghost" size="sm" onClick={handleSignOut}>
                     Sign out
