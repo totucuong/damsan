@@ -114,7 +114,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message or drag files here..."
-              className="w-full min-h-[80px] max-h-32 resize-none bg-input border-chat-border focus:border-primary/50 rounded-2xl pl-7 pr-28"
+              className="w-full min-h-[100px] max-h-32 resize-none bg-input border-chat-border focus:border-primary/50 rounded-2xl pl-7 pr-28"
             />
             <div className="absolute bottom-2 left-4 flex items-center gap-2">
               <Button
