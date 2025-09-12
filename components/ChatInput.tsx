@@ -64,24 +64,6 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
         onSubmit={handleSubmit}
         className="flex gap-3 items-end max-w-4xl mx-auto"
       >
-        <Button
-          type="button"
-          variant="ghost"
-          size="icon"
-          className="text-muted-foreground hover:text-foreground"
-          onClick={handlePaperclipClick}
-        >
-          <Paperclip className="w-5 h-5" />
-        </Button>
-        <input
-          ref={fileInputRef}
-          type="file"
-          multiple
-          className="hidden"
-          onChange={handleFileSelect}
-          accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx"
-        />
-
         <div className="flex-1 relative">
           {selectedFiles.length > 0 && (
             <div className="mb-2 p-3 bg-muted rounded-lg border">
@@ -132,20 +114,44 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               onChange={(e) => setMessage(e.target.value)}
               onKeyDown={handleKeyDown}
               placeholder="Type your message or drag files here..."
-              className="min-h-[44px] max-h-32 resize-none bg-input border-chat-border focus:border-primary/50 rounded-2xl pr-12"
+              className="w-full min-h-[80px] max-h-32 resize-none bg-input border-chat-border focus:border-primary/50 rounded-2xl pl-7 pr-28"
             />
+            <div className="absolute bottom-2 left-4 flex items-center gap-2">
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon"
+                className="text-muted-foreground hover:text-foreground"
+                onClick={handlePaperclipClick}
+              >
+                <Paperclip className="w-5 h-5" />
+              </Button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                multiple
+                className="hidden"
+                onChange={handleFileSelect}
+                accept="image/*,video/*,audio/*,.pdf,.doc,.docx,.txt,.csv,.xlsx,.pptx"
+              />
+            </div>
+            <div className="absolute bottom-2 right-2 flex items-center gap-2">
+
+              <Button
+                type="submit"
+                size="icon"
+                className="rounded-full bg-primary hover:bg-primary/90 shadow-md"
+              >
+                <Send className="w-4 h-4" />
+              </Button>
+            </div>
+
           </div>
         </div>
 
-        <Button
-          type="submit"
-          size="icon"
-          className="rounded-full bg-primary hover:bg-primary/90 shadow-md"
-        >
-          <Send className="w-4 h-4" />
-        </Button>
+
       </form>
-    </div>
+    </div >
   );
 }
 
