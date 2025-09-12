@@ -46,7 +46,7 @@ export default function LoginPage() {
                                         Login
                                     </Button>
                                     <p className="text-center text-sm text-muted-foreground">
-                                        Don't have an account yet?
+                                        Don&apos;t have an account yet?
                                         <Link href="/auth/signup" className="underline underline-offset-4">
                                             Sign up here
                                         </Link>

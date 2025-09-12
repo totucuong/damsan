@@ -30,7 +30,7 @@ export async function signup(formData: FormData) {
     // Supabase quirk: if the email already exists, signUp can return 200 OK with
     // data.user.identities being an empty array. Treat this as "user already exists".
     // See: https://supabase.com/docs/reference/javascript/auth-signup#notes
-    const identities = (signUpData as any)?.user?.identities
+    const identities = signUpData?.user?.identities
     const emailAlreadyRegistered = Array.isArray(identities) && identities.length === 0
 
     if (error || emailAlreadyRegistered) {
