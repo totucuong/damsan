@@ -38,10 +38,10 @@ export default function LoginPage() {
                                     <Input id="password" name="password" type="password" required />
                                 </div>
                                 <div className="flex flex-col gap-3">
-                                    <Button className="w-full bg-blue-400 border-blue-400" formAction={login}>
+                                    <Button className="w-full" formAction={login}>
                                         Login
                                     </Button>
-                                    <Button className="w-full  border-gray-500" formAction={signup}>Sign up</Button>
+                                    <Button className="w-full " formAction={signup}>Sign up</Button>
                                 </div>
                             </div>
                         </form>
