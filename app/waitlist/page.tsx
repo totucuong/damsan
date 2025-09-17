@@ -16,15 +16,21 @@ export const metadata = {
   title: "Join the waitlist",
 };
 
-export default function WaitlistPage({
+export default async function WaitlistPage({
   searchParams,
 }: {
-  searchParams: { success?: string; error?: string };
+  searchParams: Promise<{ success?: string; error?: string }>;
 }) {
+  const sp = await searchParams;
   return (
     <div className="flex flex-col min-h-svh w-full items-center justify-center p-6 md:p-10">
       <div className="mb-6">
-        <Image src="/logo.png" alt="Damsan.Life Logo" width={100} height={100} />
+        <Image
+          src="/logo.png"
+          alt="Damsan.Life Logo"
+          width={100}
+          height={100}
+        />
       </div>
       <div className="w-full max-w-sm">
         <Card>
@@ -35,14 +41,14 @@ export default function WaitlistPage({
             </CardDescription>
           </CardHeader>
           <CardContent>
-            {searchParams?.success && (
+            {sp?.success && (
               <div className="mb-4 rounded-md border border-green-200 bg-green-50 px-3 py-2 text-sm text-green-800">
                 Thanks! You’re on the list.
               </div>
             )}
-            {searchParams?.error && (
+            {sp?.error && (
               <div className="mb-4 rounded-md border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-800">
-                {searchParams.error === "missing_email"
+                {sp.error === "missing_email"
                   ? "Please enter a valid email."
                   : "Something went wrong. Please try again."}
               </div>
@@ -51,26 +57,20 @@ export default function WaitlistPage({
               <div className="grid gap-3">
                 <div className="grid gap-3">
                   <Label htmlFor="firstname">First name</Label>
-                  <Input id="firstname" name="firstname" type="text" placeholder="Jane" />
+                  <Input id="firstname" name="firstname" type="text" />
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="lastname">Last name</Label>
-                  <Input id="lastname" name="lastname" type="text" placeholder="Doe" />
+                  <Input id="lastname" name="lastname" type="text" />
                 </div>
                 <div className="grid gap-3">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" name="email" type="email" placeholder="m@example.com" required />
+                  <Input id="email" name="email" type="email" required />
                 </div>
                 <div className="flex flex-col gap-3">
                   <Button className="w-full" type="submit">
                     Join
                   </Button>
-                  <p className="text-center text-sm text-muted-foreground">
-                    Prefer to sign up now?{" "}
-                    <Link href="/auth/signup" className="underline underline-offset-4">
-                      Create an account
-                    </Link>
-                  </p>
                 </div>
               </div>
             </form>
