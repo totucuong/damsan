@@ -7,7 +7,7 @@ import {
   loadProfile,
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
-import { analyzeImageFile } from "./document";
+import { analyzeDocument } from "./document";
 
 export async function getMessages(userId: string) {
   return loadMessages(userId);
@@ -28,7 +28,7 @@ export async function uploadFile(file: File) {
 export async function analyzeFiles(files: File[]) {
   return Promise.all(
     files.map(async (file) => {
-      return analyzeImageFile(file);
+      return analyzeDocument(file);
     })
   );
 }
