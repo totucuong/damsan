@@ -7,7 +7,7 @@ import {
   loadProfile,
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
-import { analyzeDocument } from "./document";
+import { parseDocument as analyzeDocument } from "./document";
 
 export async function getMessages(userId: string) {
   return loadMessages(userId);
@@ -44,7 +44,7 @@ export async function processUserMessage(
       const results = await analyzeDocuments(selectedFiles);
       aiResponse = results.map((result) => ({
         isUser: false,
-        message: result.description,
+        message: result.metadata,
         isTyping: false,
         timestamp: new Date(),
       }));
