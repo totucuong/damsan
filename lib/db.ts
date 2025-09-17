@@ -94,7 +94,7 @@ export async function saveMessages(messages: Message[], userId: string) {
                 where: { id: fileRecord.id },
                 data: {
                   metadata: doc.metadata,
-                  content: doc.content as Prisma.JsonValue,
+                  content: doc.content as Prisma.InputJsonValue,
                   type: doc.type,
                 },
               });
