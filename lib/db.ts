@@ -107,3 +107,23 @@ export async function saveMessages(messages: Message[], userId: string) {
     })
   );
 }
+
+export async function addToWaitlist(params: {
+  firstname?: string;
+  lastname?: string;
+  email: string;
+}) {
+  const email = params.email.trim().toLowerCase();
+  return prisma.waitlist.upsert({
+    where: { email },
+    update: {
+      firstname: params.firstname ?? undefined,
+      lastname: params.lastname ?? undefined,
+    },
+    create: {
+      email,
+      firstname: params.firstname ?? undefined,
+      lastname: params.lastname ?? undefined,
+    },
+  });
+}

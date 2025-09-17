@@ -40,7 +40,7 @@ export default function Home() {
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" asChild>
-              <Link href="/auth/signup">Join the waitlist</Link>
+              <Link href="/waitlist">Join the waitlist</Link>
             </Button>
             {/* <Button size="lg" variant="outline" asChild>
               <Link href="/app">I already have access</Link>
