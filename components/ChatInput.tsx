@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send, Paperclip, X } from "lucide-react";
@@ -13,6 +13,11 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [showFileUpload, setShowFileUpload] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const bottomInputRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    bottomInputRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [selectedFiles]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,12 +31,12 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setSelectedFiles(prev => [...prev, ...files]);
+    setSelectedFiles((prev) => [...prev, ...files]);
     setShowFileUpload(true);
   };
 
   const handleFileRemove = (index: number) => {
-    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+    setSelectedFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
   const handlePaperclipClick = () => {
@@ -47,7 +52,7 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
     e.preventDefault();
     e.stopPropagation();
     const files = Array.from(e.dataTransfer.files);
-    setSelectedFiles(prev => [...prev, ...files]);
+    setSelectedFiles((prev) => [...prev, ...files]);
     setShowFileUpload(true);
   };
 
@@ -69,7 +74,8 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
             <div className="mb-2 p-3 bg-muted rounded-lg border">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-muted-foreground">
-                  {selectedFiles.length} file{selectedFiles.length > 1 ? 's' : ''} selected
+                  {selectedFiles.length} file
+                  {selectedFiles.length > 1 ? "s" : ""} selected
                 </span>
                 <Button
                   type="button"
@@ -86,7 +92,10 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               </div>
               <div className="space-y-1">
                 {selectedFiles.map((file, index) => (
-                  <div key={index} className="flex items-center justify-between text-sm">
+                  <div
+                    key={index}
+                    className="flex items-center justify-between text-sm"
+                  >
                     <span className="truncate flex-1 mr-2">
                       {file.name} ({(file.size / 1024 / 1024).toFixed(2)} MB)
                     </span>
@@ -136,7 +145,6 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
               />
             </div>
             <div className="absolute bottom-2 right-2 flex items-center gap-2">
-
               <Button
                 type="submit"
                 size="icon"
@@ -145,14 +153,10 @@ export function ChatInput({ onSendMessage }: ChatInputProps) {
                 <Send className="w-4 h-4" />
               </Button>
             </div>
-
           </div>
         </div>
-
-
+        <div ref={bottomInputRef}></div>
       </form>
-    </div >
+    </div>
   );
 }
-
-
