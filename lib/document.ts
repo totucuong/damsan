@@ -21,10 +21,10 @@ const ParsedDocumentSchema = z.object({
     ])
     .describe("The type of document parsed"),
   content: z
-    .json()
+    .any()
     .describe("The structured content extracted from the document"),
 });
-type ParsedDocument = z.infer<typeof ParsedDocumentSchema>;
+export type ParsedDocument = z.infer<typeof ParsedDocumentSchema>;
 
 export async function parseDocument(document: File): Promise<ParsedDocument> {
   try {

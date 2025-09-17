@@ -42,18 +42,22 @@ model File {
     url        String
     owner_id   String
     message_id String
+    metadata   String @default("")
+    content    Json @default("{}")
+    type       String @default("")
+    embedding  Float[]
     owner      User    @relation(fields: [owner_id], references: [id])
     message    Message @relation(fields: [message_id], references: [id])
-
     @@map("files")
-    Document Document?
+    
 }
 
-model Document {
-    id       String @id @default(uuid())
-    metadata String
-    content  Json
-    embedding Float[]
-    fileId   String @unique
-    file     File   @relation(fields: [fileId], references: [id])
-}
+// model Document {
+//     id       String @id @default(uuid())
+//     metadata String
+//     content  Json
+//     embedding Float[]
+//     fileId   String @unique
+//     file     File   @relation(fields: [fileId], references: [id])
+//     @@map("documents")
+// }

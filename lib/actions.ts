@@ -41,13 +41,17 @@ export async function processUserMessage(
   let aiResponse: Message[] = [];
   try {
     if (selectedFiles && selectedFiles?.length > 0) {
-      const results = await analyzeDocuments(selectedFiles);
-      aiResponse = results.map((result) => ({
-        isUser: false,
-        message: result.metadata,
-        isTyping: false,
-        timestamp: new Date(),
-      }));
+      const documents = await analyzeDocuments(selectedFiles);
+      aiResponse = [
+        {
+          isUser: false,
+          message: `I have processed ${documents.length} document(s) you provided.`,
+          isTyping: false,
+          timestamp: new Date(),
+          files: selectedFiles,
+          documents: documents,
+        },
+      ];
     }
     await saveMessages([message, ...aiResponse], userId);
   } catch (error) {
