@@ -25,7 +25,7 @@ export async function uploadFile(file: File) {
   return dbUploadFile(file);
 }
 
-export async function analyzeFiles(files: File[]) {
+export async function analyzeDocuments(files: File[]) {
   return Promise.all(
     files.map(async (file) => {
       return analyzeDocument(file);
@@ -41,7 +41,7 @@ export async function processUserMessage(
   let aiResponse: Message[] = [];
   try {
     if (selectedFiles && selectedFiles?.length > 0) {
-      const results = await analyzeFiles(selectedFiles);
+      const results = await analyzeDocuments(selectedFiles);
       aiResponse = results.map((result) => ({
         isUser: false,
         message: result.description,
