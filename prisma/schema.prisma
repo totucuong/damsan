@@ -46,4 +46,14 @@ model File {
     message    Message @relation(fields: [message_id], references: [id])
 
     @@map("files")
+    Document Document?
+}
+
+model Document {
+    id       String @id @default(uuid())
+    metadata String
+    content  Json
+    embedding Float[]
+    fileId   String @unique
+    file     File   @relation(fields: [fileId], references: [id])
 }
