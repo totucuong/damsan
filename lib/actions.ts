@@ -8,7 +8,7 @@ import {
   addToWaitlist,
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
-import { parseDocument as analyzeDocument } from "./document";
+import { analyzeDocument } from "./document";
 import { textFromParsedDocument } from "./utils";
 import { indexParsedDocumentPg, answerWithRagPg } from "./rag_actions";
 import { revalidatePath } from "next/cache";
@@ -30,21 +30,10 @@ export async function uploadFile(file: File) {
   return dbUploadFile(file);
 }
 
-export async function analyzeDocuments(files: File[], userId: string) {
+export async function analyzeDocuments(files: File[]) {
   const documents = await Promise.all(
-    files.map(async (file) => {
+    files.map(async (file, idx) => {
       const doc = await analyzeDocument(file);
-      try {
-        const text = textFromParsedDocument(doc);
-        await indexParsedDocumentPg({
-          userId,
-          fileId: undefined,
-          source: file?.name ?? "upload",
-          text,
-        });
-      } catch (e) {
-        console.error("Indexing failed:", e);
-      }
       return doc;
     })
   );
@@ -59,7 +48,7 @@ export async function processUserMessage(
   let aiResponse: Message[] = [];
   try {
     if (selectedFiles && selectedFiles?.length > 0) {
-      const documents = await analyzeDocuments(selectedFiles, userId);
+      const documents = await analyzeDocuments(selectedFiles);
 
       aiResponse = [
         {

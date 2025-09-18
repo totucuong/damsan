@@ -45,9 +45,9 @@ model File {
     metadata   String @default("")
     content    Json @default("{}")
     type       String @default("")
-    embedding  Float[]
     owner      User    @relation(fields: [owner_id], references: [id])
     message    Message @relation(fields: [message_id], references: [id])
+    chunks     DocumentChunk[]
     @@map("files")
     
 }
@@ -65,15 +65,13 @@ model Waitlist {
 model DocumentChunk {
     id          String   @id @default(uuid())
     userId      String
-    fileId      String?
-    source      String?
-    content     String
-    metadata    Json?
+    fileId      String
     tokens      Int
     contentHash String   @unique
     embedding   Unsupported("vector")
     createdAt   DateTime @default(now())
 
+    file        File   @relation(fields: [fileId], references: [id])
     @@index([userId, createdAt])
     @@map("document_chunks")
 }

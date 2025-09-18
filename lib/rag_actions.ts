@@ -96,6 +96,7 @@ export async function upsertChunksPg(params: {
       const c = chunks[i];
       const contentHash = hashContent(c.content);
       const vec = vectorSql(embeddings[i]);
+      const rowId = crypto.randomUUID();
 
       // Perform upsert with a single SQL statement and return the row id
 
@@ -103,15 +104,17 @@ export async function upsertChunksPg(params: {
         Prisma.sql`
           with ins as (
             insert into document_chunks (
-              "userId", "fileId", source, content, metadata, tokens, "contentHash", embedding
+              id, "userId", "fileId", source, content, metadata, tokens, "contentHash", embedding
             ) values (
-              ${userId}, ${fileId ?? null}, ${c.source ?? source ?? null}, ${
-          c.content
-        }, ${c.metadata ?? null}, ${c.tokens}, ${contentHash}, ${vec}
+              ${rowId}, ${userId}, ${fileId ?? null}, ${
+          c.source ?? source ?? null
+        }, ${c.content}, ${c.metadata ?? null}, ${
+          c.tokens
+        }, ${contentHash}, ${vec}
             )
             on conflict ("contentHash") do update set
               "userId" = excluded."userId",
-              "fileId" = excluded."fileId",
+              "fileId" = coalesce(excluded."fileId", document_chunks."fileId"),
               source = excluded.source,
               content = excluded.content,
               metadata = excluded.metadata,
@@ -133,8 +136,8 @@ export async function upsertChunksPg(params: {
 
 export async function indexParsedDocumentPg(params: {
   userId: string;
-  fileId?: string;
-  source?: string;
+  fileId: string;
+  source: string;
   text: string;
 }) {
   const chunks = chunkText(params.text);

@@ -1,6 +1,8 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
 import { uploadFile } from "./storage";
 import { ParsedDocument } from "./document";
+import { textFromParsedDocument } from "./rag";
+import { indexParsedDocumentPg } from "./rag_actions";
 
 export interface Message {
   id?: string; // Optional since new messages won't have an ID yet
@@ -40,6 +42,37 @@ export async function loadMessages(userId: string): Promise<Message[]> {
     });
 }
 
+// try {
+//   const text = textFromParsedDocument(doc);
+//   await indexParsedDocumentPg({
+//     userId,
+//     fileId: fileIds?.[idx],
+//     source: file?.name ?? "upload",
+//     text,
+//   });
+// } catch (e) {
+//   console.error("Indexing failed:", e);
+// }
+
+export async function indexParsedDocument(
+  doc: ParsedDocument,
+  userId: string,
+  fileId: string,
+  source: string
+) {
+  try {
+    const text = textFromParsedDocument(doc);
+    await indexParsedDocumentPg({
+      userId,
+      fileId,
+      source,
+      text,
+    });
+  } catch (e) {
+    console.error("Indexing failed:", e);
+  }
+}
+
 export async function saveMessages(messages: Message[], userId: string) {
   // Save messages and their associated files
   await Promise.all(
@@ -57,7 +90,7 @@ export async function saveMessages(messages: Message[], userId: string) {
       // Save files if they exist (associate with the created message)
       if (!message.isUser && message.files && message.files.length > 0) {
         const results = await Promise.all(
-          message.files.map(async (file) => {
+          message.files.map(async (file, idx) => {
             try {
               const fileData = await uploadFile(file);
               return await prisma.file.create({
@@ -65,6 +98,10 @@ export async function saveMessages(messages: Message[], userId: string) {
                   url: fileData.fullPath,
                   owner_id: userId,
                   message_id: createdMessage.id,
+                  // content: message.documents?.[idx]
+                  //   .content as Prisma.InputJsonValue,
+                  // type: message.documents?.[idx].type,
+                  // metadata: message.documents?.[idx].metadata,
                 },
               });
             } catch (error) {
@@ -90,6 +127,20 @@ export async function saveMessages(messages: Message[], userId: string) {
           await Promise.all(
             successfulResults.map((fileRecord, idx) => {
               const doc = message.documents![idx]; // We can use ! here as we've checked above
+              try {
+                const text = textFromParsedDocument(doc);
+                console.log("Indexing document for file:", fileRecord.id);
+                console.log("userid is:", userId);
+                indexParsedDocumentPg({
+                  userId,
+                  fileId: fileRecord.id,
+                  source: fileRecord.id,
+                  text,
+                });
+              } catch (e) {
+                console.error("Indexing failed:", e);
+              }
+
               return prisma.file.update({
                 where: { id: fileRecord.id },
                 data: {

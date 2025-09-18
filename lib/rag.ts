@@ -1,3 +1,4 @@
+import { ParsedDocument } from "./document";
 export type Chunk = {
   content: string;
   tokens: number;
@@ -80,4 +81,20 @@ export function buildRagPrompt(params: {
   ];
   console.log("RAG prompt", messages);
   return { messages };
+}
+
+export function textFromParsedDocument(doc: ParsedDocument): string {
+  // @TODO: use titoken?
+  try {
+    const header = `${doc.type?.toString?.() || "unknown"}\n${
+      doc.metadata || ""
+    }`.trim();
+    const body =
+      typeof doc.content === "string"
+        ? doc.content
+        : JSON.stringify(doc.content, null, 2);
+    return [header, body].filter(Boolean).join("\n\n");
+  } catch {
+    return "";
+  }
 }

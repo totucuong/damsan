@@ -26,7 +26,7 @@ const ParsedDocumentSchema = z.object({
 });
 export type ParsedDocument = z.infer<typeof ParsedDocumentSchema>;
 
-export async function parseDocument(document: File): Promise<ParsedDocument> {
+export async function analyzeDocument(document: File): Promise<ParsedDocument> {
   try {
     // Convert file to base64
     const arrayBuffer = await document.arrayBuffer();
