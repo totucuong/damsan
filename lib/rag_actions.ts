@@ -99,7 +99,8 @@ export async function upsertChunksPg(params: {
       const rowId = crypto.randomUUID();
 
       // Perform upsert with a single SQL statement and return the row id
-
+      // we need to use raw sql because of the prisma and pgvector don't work well together
+      // DocumentChunk model embedding is a vector type that is not natively supported by prisma
       const rows = await tx.$queryRaw<{ id: string }[]>(
         Prisma.sql`
           with ins as (

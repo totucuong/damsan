@@ -98,10 +98,6 @@ export async function saveMessages(messages: Message[], userId: string) {
                   url: fileData.fullPath,
                   owner_id: userId,
                   message_id: createdMessage.id,
-                  // content: message.documents?.[idx]
-                  //   .content as Prisma.InputJsonValue,
-                  // type: message.documents?.[idx].type,
-                  // metadata: message.documents?.[idx].metadata,
                 },
               });
             } catch (error) {
