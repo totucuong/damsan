@@ -17,10 +17,6 @@ export function ChatMessage({
   const role = isUser ? "user" : "assistant";
   return (
     <AiMessage from={role}>
-      <MessageAvatar
-        src={isUser ? undefined : "/logo.png"}
-        name={isUser ? "You" : "AI"}
-      />
       <MessageContent>
         {isTyping ? (
           <div className="flex items-center gap-1">
@@ -34,6 +30,10 @@ export function ChatMessage({
           <p className="whitespace-pre-wrap leading-relaxed">{message}</p>
         )}
       </MessageContent>
+      <MessageAvatar
+        src={isUser ? undefined : "/logo.png"}
+        name={isUser ? "You" : "AI"}
+      />
     </AiMessage>
   );
 }
