@@ -1,5 +1,4 @@
-import { cn } from "@/lib/utils";
-import { Dog, User } from "lucide-react";
+import { Message as AiMessage, MessageAvatar, MessageContent } from "@/components/ui/shadcn-io/ai/message";
 
 export interface ChatMessageProps {
   message: string;
@@ -11,57 +10,30 @@ export interface ChatMessageProps {
 export function ChatMessage({
   message,
   isUser,
+  // keeping timestamp for future use, not rendered for now
   timestamp,
   isTyping = false,
 }: ChatMessageProps) {
+  const role = isUser ? "user" : "assistant";
   return (
-    <div
-      className={cn("flex gap-3 p-4", isUser ? "justify-end" : "justify-start")}
-    >
-      {!isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center">
-          <Dog className="w-4 h-4 text-primary" />
-        </div>
-      )}
-
-      <div
-        className={cn(
-          "max-w-[80%] rounded-2xl px-4 py-3 shadow-sm",
-          isUser
-            ? "bg-primary text-primary-foreground rounded-br-md"
-            : "bg-chat-messageBot text-foreground rounded-bl-md border border-border"
-        )}
-      >
+    <AiMessage from={role}>
+      <MessageAvatar
+        src={isUser ? undefined : "/logo.png"}
+        name={isUser ? "You" : "AI"}
+      />
+      <MessageContent>
         {isTyping ? (
           <div className="flex items-center gap-1">
             <div className="flex gap-1">
-              <div
-                className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                style={{ animationDelay: "0ms" }}
-              />
-              <div
-                className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                style={{ animationDelay: "150ms" }}
-              />
-              <div
-                className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce"
-                style={{ animationDelay: "300ms" }}
-              />
+              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "0ms" }} />
+              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "150ms" }} />
+              <div className="w-2 h-2 bg-muted-foreground rounded-full animate-bounce" style={{ animationDelay: "300ms" }} />
             </div>
           </div>
         ) : (
-          <p className="text-sm leading-relaxed whitespace-pre-wrap">
-            {message}
-          </p>
+          <p className="whitespace-pre-wrap leading-relaxed">{message}</p>
         )}
-      </div>
-
-      {isUser && (
-        <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary flex items-center justify-center">
-          <User className="w-4 h-4 text-primary-foreground" />
-        </div>
-      )}
-    </div>
+      </MessageContent>
+    </AiMessage>
   );
 }
-
