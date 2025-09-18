@@ -89,15 +89,3 @@ export async function parseDocument(document: File): Promise<ParsedDocument> {
     );
   }
 }
-
-export function textFromParsedDocument(doc: ParsedDocument): string {
-  try {
-    const header = `${doc.type?.toString?.() || "unknown"}\n${doc.metadata || ""}`.trim();
-    const body = typeof doc.content === "string"
-      ? doc.content
-      : JSON.stringify(doc.content, null, 2);
-    return [header, body].filter(Boolean).join("\n\n");
-  } catch {
-    return "";
-  }
-}

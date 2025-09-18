@@ -8,7 +8,8 @@ import {
   addToWaitlist,
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
-import { parseDocument as analyzeDocument, textFromParsedDocument } from "./document";
+import { parseDocument as analyzeDocument } from "./document";
+import { textFromParsedDocument } from "./utils";
 import { indexParsedDocumentPg, answerWithRagPg } from "./rag";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
@@ -77,12 +78,17 @@ export async function processUserMessage(
       await saveMessages([message, ...aiResponse], userId);
     } else {
       // No files: answer via RAG
-      const { answer, citations } = await answerWithRagPg({ userId, question: message.message });
+      const { answer, citations } = await answerWithRagPg({
+        userId,
+        question: message.message,
+      });
       const aiMessage: Message = {
         isUser: false,
         message:
           citations && citations.length > 0
-            ? `${answer}\n\nSources:\n${citations.map((c, i) => `[${i + 1}] ${c.source || c.id}`).join("\n")}`
+            ? `${answer}\n\nSources:\n${citations
+                .map((c, i) => `[${i + 1}] ${c.source || c.id}`)
+                .join("\n")}`
             : answer,
         isTyping: false,
         timestamp: new Date(),
@@ -97,8 +103,10 @@ export async function processUserMessage(
 }
 
 export async function joinWaitlist(formData: FormData) {
-  const firstname = (formData.get("firstname") as string | null)?.trim() || undefined;
-  const lastname = (formData.get("lastname") as string | null)?.trim() || undefined;
+  const firstname =
+    (formData.get("firstname") as string | null)?.trim() || undefined;
+  const lastname =
+    (formData.get("lastname") as string | null)?.trim() || undefined;
   const emailRaw = (formData.get("email") as string | null)?.trim();
 
   if (!emailRaw) {
