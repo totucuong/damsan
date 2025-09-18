@@ -8,7 +8,8 @@ import {
   addToWaitlist,
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
-import { parseDocument as analyzeDocument } from "./document";
+import { parseDocument as analyzeDocument, textFromParsedDocument } from "./document";
+import { indexParsedDocumentPg, answerWithRagPg } from "./rag";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
@@ -45,6 +46,24 @@ export async function processUserMessage(
   try {
     if (selectedFiles && selectedFiles?.length > 0) {
       const documents = await analyzeDocuments(selectedFiles);
+      // Index parsed documents into pgvector for RAG
+      try {
+        await Promise.all(
+          documents.map(async (doc, idx) => {
+            const text = textFromParsedDocument(doc);
+            const file = selectedFiles?.[idx];
+            await indexParsedDocumentPg({
+              userId,
+              fileId: undefined,
+              source: file?.name ?? "upload",
+              text,
+            });
+          })
+        );
+      } catch (e) {
+        console.error("Indexing failed:", e);
+      }
+
       aiResponse = [
         {
           isUser: false,
@@ -55,8 +74,22 @@ export async function processUserMessage(
           documents: documents,
         },
       ];
+      await saveMessages([message, ...aiResponse], userId);
+    } else {
+      // No files: answer via RAG
+      const { answer, citations } = await answerWithRagPg({ userId, question: message.message });
+      const aiMessage: Message = {
+        isUser: false,
+        message:
+          citations && citations.length > 0
+            ? `${answer}\n\nSources:\n${citations.map((c, i) => `[${i + 1}] ${c.source || c.id}`).join("\n")}`
+            : answer,
+        isTyping: false,
+        timestamp: new Date(),
+      };
+      aiResponse = [aiMessage];
+      await saveMessages([message, aiMessage], userId);
     }
-    await saveMessages([message, ...aiResponse], userId);
   } catch (error) {
     console.error("Failed to process user message:", error);
   }

@@ -52,15 +52,6 @@ model File {
     
 }
 
-// model Document {
-//     id       String @id @default(uuid())
-//     metadata String
-//     content  Json
-//     embedding Float[]
-//     fileId   String @unique
-//     file     File   @relation(fields: [fileId], references: [id])
-//     @@map("documents")
-// }
 
 model Waitlist {
     id        String  @id @default(uuid())
@@ -69,4 +60,20 @@ model Waitlist {
     email     String  @unique
 
     @@map("waitlist")
+}
+
+model DocumentChunk {
+    id          String   @id @default(uuid())
+    userId      String
+    fileId      String?
+    source      String?
+    content     String
+    metadata    Json?
+    tokens      Int
+    contentHash String   @unique
+    embedding   Unsupported("vector")
+    createdAt   DateTime @default(now())
+
+    @@index([userId, createdAt])
+    @@map("document_chunks")
 }
