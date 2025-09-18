@@ -69,7 +69,7 @@ export function buildRagPrompt(params: {
     {
       role: "system" as const,
       content:
-        "You are a precise assistant. Answer strictly from the provided context. If missing, say you don't know. Cite snippets with [n] and list Sources.",
+        "You are a health assistant. Answer the question based on the provided context. Cite snippets with [n] and list Sources.",
     },
     {
       role: "user" as const,
@@ -78,5 +78,6 @@ export function buildRagPrompt(params: {
       }\n\nQuestion: ${question}`,
     },
   ];
+  console.log("RAG prompt", messages);
   return { messages };
 }

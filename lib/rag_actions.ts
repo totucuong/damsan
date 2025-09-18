@@ -29,7 +29,7 @@ export async function answerWithRagPg(params: {
   question: string;
   k?: number;
 }) {
-  const { userId, question, k = 8 } = params;
+  const { userId, question, k = 8 } = params; // @TODO make k configurable by user
   const context = await searchSimilarChunksPg({ userId, query: question, k });
   const { messages } = buildRagPrompt({ question, context });
   const completion = await openai.chat.completions.create({
@@ -98,13 +98,16 @@ export async function upsertChunksPg(params: {
       const vec = vectorSql(embeddings[i]);
 
       // Perform upsert with a single SQL statement and return the row id
+
       const rows = await tx.$queryRaw<{ id: string }[]>(
         Prisma.sql`
           with ins as (
             insert into document_chunks (
               "userId", "fileId", source, content, metadata, tokens, "contentHash", embedding
             ) values (
-              ${userId}, ${fileId ?? null}, ${c.source ?? source ?? null}, ${c.content}, ${c.metadata ?? null}, ${c.tokens}, ${contentHash}, ${vec}
+              ${userId}, ${fileId ?? null}, ${c.source ?? source ?? null}, ${
+          c.content
+        }, ${c.metadata ?? null}, ${c.tokens}, ${contentHash}, ${vec}
             )
             on conflict ("contentHash") do update set
               "userId" = excluded."userId",

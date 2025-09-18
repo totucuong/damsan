@@ -30,12 +30,25 @@ export async function uploadFile(file: File) {
   return dbUploadFile(file);
 }
 
-export async function analyzeDocuments(files: File[]) {
-  return Promise.all(
+export async function analyzeDocuments(files: File[], userId: string) {
+  const documents = await Promise.all(
     files.map(async (file) => {
-      return analyzeDocument(file);
+      const doc = await analyzeDocument(file);
+      try {
+        const text = textFromParsedDocument(doc);
+        await indexParsedDocumentPg({
+          userId,
+          fileId: undefined,
+          source: file?.name ?? "upload",
+          text,
+        });
+      } catch (e) {
+        console.error("Indexing failed:", e);
+      }
+      return doc;
     })
   );
+  return documents;
 }
 
 export async function processUserMessage(
@@ -46,24 +59,7 @@ export async function processUserMessage(
   let aiResponse: Message[] = [];
   try {
     if (selectedFiles && selectedFiles?.length > 0) {
-      const documents = await analyzeDocuments(selectedFiles);
-      // Index parsed documents into pgvector for RAG
-      try {
-        await Promise.all(
-          documents.map(async (doc, idx) => {
-            const text = textFromParsedDocument(doc);
-            const file = selectedFiles?.[idx];
-            await indexParsedDocumentPg({
-              userId,
-              fileId: undefined,
-              source: file?.name ?? "upload",
-              text,
-            });
-          })
-        );
-      } catch (e) {
-        console.error("Indexing failed:", e);
-      }
+      const documents = await analyzeDocuments(selectedFiles, userId);
 
       aiResponse = [
         {
