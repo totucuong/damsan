@@ -10,7 +10,7 @@ import {
 import { uploadFile as dbUploadFile } from "./storage";
 import { parseDocument as analyzeDocument } from "./document";
 import { textFromParsedDocument } from "./utils";
-import { indexParsedDocumentPg, answerWithRagPg } from "./rag";
+import { indexParsedDocumentPg, answerWithRagPg } from "./rag_actions";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
