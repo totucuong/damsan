@@ -24,7 +24,6 @@ Instructions:
 - Be concise; aim for brief, direct answers.
 - Do not fabricate information; only use what is provided in the context.
 - Sometimes the drug name is appended with the company name, e.g., "Amlodipine (Sandoz)". 
-In such cases, please consider the context is relevant for your answer.
-- Cite only relevant matching snippets. Cite snippets with [n].
+In such cases, please consider the context is relevant for your answer, and cite the relevant snippets with [n].
 `,
 };
