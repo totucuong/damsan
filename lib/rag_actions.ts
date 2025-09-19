@@ -59,7 +59,7 @@ export async function searchSimilarChunksPg(params: {
     {
       id: string;
       content: string;
-      source: string | null;
+      source: string;
       score: number;
     }[]
   >(
@@ -83,11 +83,10 @@ export async function searchSimilarChunksPg(params: {
 
 export async function upsertChunksPg(params: {
   userId: string;
-  fileId?: string;
-  source?: string;
+  source: string;
   chunks: Chunk[];
 }) {
-  const { userId, fileId, source, chunks } = params;
+  const { userId, source, chunks } = params;
   if (!chunks.length) return;
   const embeddings = await embedTexts(chunks.map((c) => c.content));
 
@@ -101,24 +100,28 @@ export async function upsertChunksPg(params: {
       // Perform upsert with a single SQL statement and return the row id
       // we need to use raw sql because of the prisma and pgvector don't work well together
       // DocumentChunk model embedding is a vector type that is not natively supported by prisma
+      console.log("Upserting chunk:", {
+        rowId: rowId,
+        userId: userId,
+        source: source,
+        hash_content: contentHash,
+        tokens: c.tokens,
+        chash: contentHash,
+        vectorDim: embeddings[i].length,
+      });
       const rows = await tx.$queryRaw<{ id: string }[]>(
         Prisma.sql`
           with ins as (
             insert into document_chunks (
-              id, "userId", "fileId", source, content, metadata, tokens, "contentHash", embedding
+              id, "userId",  "source", content, tokens, "contentHash", embedding
             ) values (
-              ${rowId}, ${userId}, ${fileId ?? null}, ${
-          c.source ?? source ?? null
-        }, ${c.content}, ${c.metadata ?? null}, ${
-          c.tokens
-        }, ${contentHash}, ${vec}
+              ${rowId}, ${userId}, ${source},  ${c.content},
+         ${c.tokens}, ${contentHash}, ${vec}
             )
             on conflict ("contentHash") do update set
               "userId" = excluded."userId",
-              "fileId" = coalesce(excluded."fileId", document_chunks."fileId"),
-              source = excluded.source,
+              "source" = coalesce(excluded."source", document_chunks."source"),
               content = excluded.content,
-              metadata = excluded.metadata,
               tokens = excluded.tokens,
               embedding = excluded.embedding
             returning id
@@ -137,7 +140,6 @@ export async function upsertChunksPg(params: {
 
 export async function indexParsedDocumentPg(params: {
   userId: string;
-  fileId: string;
   source: string;
   text: string;
 }) {

@@ -3,20 +3,18 @@ import { prompt } from "./prompt";
 export type Chunk = {
   content: string;
   tokens: number;
-  source?: string;
-  metadata?: Record<string, any>;
 };
 
 export type Retrieved = {
   id: string;
   content: string;
-  source: string | null;
+  source: string;
   score: number;
 };
 
 export type Citation = {
   id: string;
-  source?: string | null;
+  source: string;
   preview: string;
   score: number;
 };

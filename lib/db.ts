@@ -46,29 +46,15 @@ export async function loadMessages(userId: string): Promise<Message[]> {
     );
 }
 
-// try {
-//   const text = textFromParsedDocument(doc);
-//   await indexParsedDocumentPg({
-//     userId,
-//     fileId: fileIds?.[idx],
-//     source: file?.name ?? "upload",
-//     text,
-//   });
-// } catch (e) {
-//   console.error("Indexing failed:", e);
-// }
-
 export async function indexParsedDocument(
   doc: ParsedDocument,
   userId: string,
-  fileId: string,
   source: string
 ) {
   try {
     const text = textFromParsedDocument(doc);
     await indexParsedDocumentPg({
       userId,
-      fileId,
       source,
       text,
     });
@@ -125,6 +111,34 @@ async function saveFiles(message: Message, messageId: string, userId: string) {
   return [];
 }
 
+export async function indexFiles(
+  records: {
+    metadata: string;
+    type: string;
+    content: Prisma.JsonValue;
+    id: string;
+    url: string;
+    owner_id: string;
+    message_id: string;
+  }[],
+  documents: ParsedDocument[]
+) {
+  await Promise.all(
+    records.map((record, idx) => {
+      try {
+        const text = textFromParsedDocument(documents[idx]);
+        indexParsedDocumentPg({
+          userId: record.owner_id,
+          source: record.id, // use file ID as source
+          text,
+        });
+      } catch (e) {
+        console.error("Indexing failed:", e);
+      }
+    })
+  );
+}
+
 export async function saveMessages(messages: Message[], userId: string) {
   // Save messages and their associated files
   await Promise.all(
@@ -133,48 +147,9 @@ export async function saveMessages(messages: Message[], userId: string) {
 
       // save files only for AI messages, ignore file in user messages
       if (!message.isUser) {
-        const results = await saveFiles(message, createdMessage.id, userId);
-
-        // Filter out null results from failed uploads
-        const successfulResults = results.filter(
-          (result): result is NonNullable<typeof result> => result !== null
-        );
-
-        // Check if documents exist and match the successful uploads
-        if (
-          message.documents &&
-          successfulResults.length > 0 &&
-          message.documents.length === successfulResults.length
-        ) {
-          // Update files with document metadata if available
-          await Promise.all(
-            successfulResults.map((fileRecord, idx) => {
-              const doc = message.documents![idx]; // We can use ! here as we've checked above
-              try {
-                const text = textFromParsedDocument(doc);
-                indexParsedDocumentPg({
-                  userId,
-                  fileId: fileRecord.id,
-                  source: fileRecord.id,
-                  text,
-                });
-              } catch (e) {
-                console.error("Indexing failed:", e);
-              }
-
-              return prisma.file.update({
-                where: { id: fileRecord.id },
-                data: {
-                  metadata: doc.metadata,
-                  content: doc.content as Prisma.InputJsonValue,
-                  type: doc.type,
-                },
-              });
-            })
-          );
-        }
+        const fileRecords = await saveFiles(message, createdMessage.id, userId);
+        indexFiles(fileRecords, message.documents!);
       }
-
       return createdMessage;
     })
   );

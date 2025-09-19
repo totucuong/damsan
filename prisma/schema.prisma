@@ -66,14 +66,14 @@ model Waitlist {
 model DocumentChunk {
     id          String   @id @default(uuid())
     userId      String
-    fileId      String // source of the chunk
+    source      String // source of the chunk
     tokens      Int
     content     String // original content of the chunk
     contentHash String   @unique
     embedding   Unsupported("vector")
     createdAt   DateTime @default(now())
 
-    file        File   @relation(fields: [fileId], references: [id])
+    file        File   @relation(fields: [source], references: [id])
     @@index([userId, createdAt])
     @@map("document_chunks")
 }
