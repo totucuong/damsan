@@ -15,6 +15,7 @@ export function Memory({ memory }: { memory: Message[] }) {
             isUser={message.isUser}
             timestamp={message.timestamp}
             isTyping={message.isTyping}
+            citations={message.citations}
           />
         ))}
       </ConversationContent>

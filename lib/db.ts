@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient, User } from "@prisma/client";
+import type { Citation } from "./rag";
 import { uploadFile } from "./storage";
 import { ParsedDocument } from "./document";
 import { textFromParsedDocument } from "./rag";
@@ -12,6 +13,7 @@ export interface Message {
   isTyping: boolean;
   files?: File[]; // an user message can have multiple files
   documents?: ParsedDocument[]; // an AI message can have multiple parsed documents & files
+  citations?: Citation[]; // optional citations for AI messages
 }
 
 const prisma = new PrismaClient();

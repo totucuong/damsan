@@ -68,14 +68,10 @@ export async function processUserMessage(
       });
       const aiMessage: Message = {
         isUser: false,
-        message:
-          citations && citations.length > 0
-            ? `${answer}\n\nSources:\n${citations
-                .map((c, i) => `[${i + 1}] ${c.source || c.id}`)
-                .join("\n")}`
-            : answer,
+        message: answer,
         isTyping: false,
         timestamp: new Date(),
+        ...(citations && citations.length > 0 ? { citations } : {}),
       };
       aiResponse = [aiMessage];
       await saveMessages([message, aiMessage], userId);
