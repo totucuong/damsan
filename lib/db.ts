@@ -142,7 +142,7 @@ export async function indexFiles(
 export async function saveMessages(messages: Message[], userId: string) {
   // Save messages and their associated files
   await Promise.all(
-    messages.map(async (message, index) => {
+    messages.map(async (message) => {
       const createdMessage = await saveMessage(message, userId);
 
       // save files only for AI messages, ignore file in user messages
