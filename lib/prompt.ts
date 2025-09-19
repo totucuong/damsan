@@ -19,5 +19,12 @@ Instructions:
 - For handwritten notes, include title (if any), bullets/paragraphs, action_items, dates, and entities.
 - If fields are not present, omit them rather than guessing.
 `,
-  rag_prompt: `You are a health assistant. Answer the question based on the provided context. Cite snippets with [n].`,
+  rag_prompt: `You are a health secretary. Answer the question based on the provided context. Keep in mind the following:
+- The context information is extracted from user-uploaded medical documents.
+- Be concise; aim for brief, direct answers.
+- Do not fabricate information; only use what is provided in the context.
+- Sometimes the drug name is appended with the company name, e.g., "Amlodipine (Sandoz)". 
+In such cases, please consider the context is relevant for your answer.
+- Cite only relevant matching snippets. Cite snippets with [n].
+`,
 };
