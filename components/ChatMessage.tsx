@@ -39,9 +39,20 @@ export function ChatMessage({
             <SourcesTrigger count={citations.length} />
             <SourcesContent>
               {citations.map((c, i) => {
-                const rawTitle = c.source || c.id;
-                const title = `[${i + 1}] ${rawTitle}`;
-                const href = /^https?:\/\//i.test(rawTitle) ? rawTitle : undefined;
+                const fromUrl = (url?: string) => {
+                  if (!url) return undefined;
+                  try {
+                    // Handle absolute URLs and storage paths alike
+                    const name = url.split('/').pop() || url;
+                    return decodeURIComponent(name.trim());
+                  } catch {
+                    return undefined;
+                  }
+                };
+                const fileName = fromUrl(c.fileUrl);
+                const baseTitle = fileName || c.source || c.id;
+                const title = `[${i + 1}] ${baseTitle}`;
+                const href = c.fileUrl && /^https?:\/\//i.test(c.fileUrl) ? c.fileUrl : undefined;
                 return (
                   <Source
                     key={c.id || i}

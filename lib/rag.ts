@@ -11,6 +11,7 @@ export type Retrieved = {
   source: string;
   score: number;
   sourceType?: DocumentType;
+  fileUrl?: string;
 };
 
 export type Citation = {
@@ -19,6 +20,7 @@ export type Citation = {
   preview: string;
   score: number;
   sourceType?: DocumentType;
+  fileUrl?: string;
 };
 
 function estimateTokens(text: string) {

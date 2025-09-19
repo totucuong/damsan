@@ -44,6 +44,7 @@ export async function answerWithRagPg(params: {
     preview: c.content.slice(0, 240),
     score: c.score,
     sourceType: c.sourceType,
+    fileUrl: c.fileUrl,
   }));
   return { answer, citations, used: context };
 }
@@ -63,6 +64,7 @@ export async function searchSimilarChunksPg(params: {
       source: string;
       score: number;
       source_type: string | null;
+      source_url: string | null;
     }[]
   >(
     Prisma.sql`
@@ -70,7 +72,8 @@ export async function searchSimilarChunksPg(params: {
              dc.content,
              dc.source,
              1 - (dc.embedding <=> ${vec}) as score,
-             f.type as source_type
+             f.type as source_type,
+             f.url as source_url
       from document_chunks as dc
       join files as f on f.id = dc.source
       where dc."userId" = ${userId}
@@ -85,6 +88,7 @@ export async function searchSimilarChunksPg(params: {
     source: r.source,
     score: Number(r.score),
     sourceType: (r.source_type ?? undefined) as Retrieved["sourceType"],
+    fileUrl: r.source_url ?? undefined,
   }));
 }
 
