@@ -66,8 +66,9 @@ model Waitlist {
 model DocumentChunk {
     id          String   @id @default(uuid())
     userId      String
-    fileId      String
+    fileId      String // source of the chunk
     tokens      Int
+    content     String // original content of the chunk
     contentHash String   @unique
     embedding   Unsupported("vector")
     createdAt   DateTime @default(now())

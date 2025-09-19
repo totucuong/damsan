@@ -40,7 +40,8 @@ export async function loadMessages(userId: string): Promise<Message[]> {
         message: row.message,
         timestamp: row.timestamp,
         isTyping: false,
-        citations: (row.citations as unknown as Citation[] | undefined) || undefined,
+        citations:
+          (row.citations as unknown as Citation[] | undefined) || undefined,
       }))
     );
 }
@@ -76,48 +77,68 @@ export async function indexParsedDocument(
   }
 }
 
+async function saveMessage(message: Message, userId: string) {
+  return prisma.message.create({
+    data: {
+      message: message.message,
+      type: message.isUser ? "HUMAN" : "BOT",
+      timestamp: message.timestamp,
+      userId: userId,
+      ...(message.citations
+        ? {
+            citations: message.citations as unknown as Prisma.InputJsonValue,
+          }
+        : {}),
+    },
+  });
+}
+
+async function saveFiles(message: Message, messageId: string, userId: string) {
+  if (
+    message.files &&
+    message.documents &&
+    message.files.length > 0 &&
+    message.documents.length > 0
+  ) {
+    try {
+      return Promise.all(
+        message.files.map(async (file, index) => {
+          const fileData = await uploadFile(file);
+          return prisma.file.create({
+            data: {
+              url: fileData.fullPath,
+              owner_id: userId,
+              message_id: messageId,
+              metadata: message.documents?.[index].metadata ?? "",
+              content: message.documents?.[index]
+                .content as Prisma.InputJsonValue,
+              type: message.documents?.[index].type ?? "",
+            },
+          });
+        })
+      );
+    } catch (error) {
+      console.error("Failed to upload file:", error);
+      return [];
+    }
+  }
+  return [];
+}
+
 export async function saveMessages(messages: Message[], userId: string) {
   // Save messages and their associated files
   await Promise.all(
     messages.map(async (message, index) => {
-      // Create the message first
-      const createdMessage = await prisma.message.create({
-        data: {
-          message: message.message,
-          type: message.isUser ? "HUMAN" : "BOT",
-          timestamp: message.timestamp,
-          userId: userId,
-          ...(message.citations
-            ? { citations: message.citations as unknown as Prisma.InputJsonValue }
-            : {}),
-        },
-      });
+      const createdMessage = await saveMessage(message, userId);
 
-      // Save files if they exist (associate with the created message)
-      if (!message.isUser && message.files && message.files.length > 0) {
-        const results = await Promise.all(
-          message.files.map(async (file, idx) => {
-            try {
-              const fileData = await uploadFile(file);
-              return await prisma.file.create({
-                data: {
-                  url: fileData.fullPath,
-                  owner_id: userId,
-                  message_id: createdMessage.id,
-                },
-              });
-            } catch (error) {
-              console.error("Failed to upload file:", error);
-              return null; // Return null for failed uploads
-            }
-          })
-        );
+      // save files only for AI messages, ignore file in user messages
+      if (!message.isUser) {
+        const results = await saveFiles(message, createdMessage.id, userId);
 
         // Filter out null results from failed uploads
         const successfulResults = results.filter(
           (result): result is NonNullable<typeof result> => result !== null
         );
-        console.log("Uploaded files:", successfulResults);
 
         // Check if documents exist and match the successful uploads
         if (
@@ -131,8 +152,6 @@ export async function saveMessages(messages: Message[], userId: string) {
               const doc = message.documents![idx]; // We can use ! here as we've checked above
               try {
                 const text = textFromParsedDocument(doc);
-                console.log("Indexing document for file:", fileRecord.id);
-                console.log("userid is:", userId);
                 indexParsedDocumentPg({
                   userId,
                   fileId: fileRecord.id,
