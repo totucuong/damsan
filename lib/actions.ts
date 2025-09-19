@@ -9,8 +9,7 @@ import {
 } from "./db";
 import { uploadFile as dbUploadFile } from "./storage";
 import { analyzeDocument } from "./document";
-import { textFromParsedDocument } from "./utils";
-import { indexParsedDocumentPg, answerWithRagPg } from "./rag_actions";
+import { answerWithRagPg } from "./rag_actions";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
