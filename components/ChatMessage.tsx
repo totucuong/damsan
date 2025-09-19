@@ -59,6 +59,8 @@ export function ChatMessage({
                     href={href || "#"}
                     title={title}
                     sourceType={c.sourceType}
+                    previewText={c.preview}
+                    fileUrl={c.fileUrl}
                     aria-label={c.preview ? `${title}: ${c.preview}` : title}
                   />
                 );

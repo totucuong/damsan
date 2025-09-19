@@ -1,5 +1,7 @@
 "use client";
 
+import * as React from "react";
+
 import {
   Collapsible,
   CollapsibleContent,
@@ -17,6 +19,7 @@ import {
 } from "lucide-react";
 import type { ComponentProps } from "react";
 import type { DocumentType } from "@/lib/document_types";
+import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
 
 export type SourcesProps = ComponentProps<"div">;
 
@@ -65,6 +68,8 @@ export const SourcesContent = ({
 
 export type SourceProps = ComponentProps<"a"> & {
   sourceType?: DocumentType;
+  previewText?: string;
+  fileUrl?: string;
 };
 
 function SourceIcon({ type }: { type?: DocumentType }) {
@@ -89,20 +94,68 @@ export const Source = ({
   title,
   children,
   sourceType,
+  previewText,
+  fileUrl,
+  onClick,
   ...props
-}: SourceProps) => (
-  <a
-    className="flex items-center gap-2"
-    href={href}
-    rel="noreferrer"
-    target="_blank"
-    {...props}
-  >
-    {children ?? (
-      <>
-        <SourceIcon type={sourceType} />
-        <span className="block font-medium">{title}</span>
-      </>
-    )}
-  </a>
-);
+}: SourceProps) => {
+  const [open, setOpen] = React.useState(false);
+
+  const handleClick: React.MouseEventHandler<HTMLAnchorElement> = (e) => {
+    if (e.metaKey || e.ctrlKey || e.button === 1) return; // allow new-tab gestures
+    e.preventDefault();
+    setOpen((o) => !o);
+    onClick?.(e);
+  };
+
+  const contentHref = href;
+
+  return (
+    <HoverCard open={open} onOpenChange={setOpen}>
+      <HoverCardTrigger asChild>
+        <a
+          className="flex items-center gap-2"
+          href={href}
+          rel="noreferrer"
+          target="_blank"
+          onClick={handleClick}
+          {...props}
+        >
+          {children ?? (
+            <>
+              <SourceIcon type={sourceType} />
+              <span className="block font-medium">{title}</span>
+            </>
+          )}
+        </a>
+      </HoverCardTrigger>
+      <HoverCardContent className="w-80">
+        <div className="flex items-start gap-2">
+          <SourceIcon type={sourceType} />
+          <div className="min-w-0 flex-1">
+            <div className="truncate font-medium" title={title}>
+              {title}
+            </div>
+            {previewText ? (
+              <p className="mt-1 line-clamp-6 whitespace-pre-wrap text-xs text-muted-foreground">
+                {previewText}
+              </p>
+            ) : null}
+            {contentHref ? (
+              <div className="mt-2">
+                <a
+                  className="text-xs font-medium text-primary underline underline-offset-2 hover:opacity-80"
+                  href={contentHref}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Open source
+                </a>
+              </div>
+            ) : null}
+          </div>
+        </div>
+      </HoverCardContent>
+    </HoverCard>
+  );
+};
