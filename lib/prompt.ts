@@ -1,6 +1,6 @@
 export const prompt = {
   gpt4oMini: `Analyze this image and extract structured information about it. Provide a detailed description, identify objects, extract any text, note dominant colors, assess the mood, generate relevant tags, count people, and identify the location type if possible. Return the response as a valid JSON object with the following structure: {"description": string, "objects": string[], "text": string (optional), "colors": string[], "mood": string, "tags": string[], "people_count": number, "location_type": string (optional)}"`,
-  system_prompt: `You are a precise information extraction AI. Parse the given document (image or PDF) and produce a compact JSON.
+  document_prompt: `You are a precise information extraction AI. Parse the given document (image or PDF) and produce a compact JSON.
 
 Return ONLY valid JSON, no explanations. Shape:
 {
@@ -19,4 +19,5 @@ Instructions:
 - For handwritten notes, include title (if any), bullets/paragraphs, action_items, dates, and entities.
 - If fields are not present, omit them rather than guessing.
 `,
+  rag_prompt: `You are a health assistant. Answer the question based on the provided context. Cite snippets with [n].`,
 };

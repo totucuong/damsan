@@ -1,4 +1,5 @@
 import { ParsedDocument } from "./document";
+import { prompt } from "./prompt";
 export type Chunk = {
   content: string;
   tokens: number;
@@ -69,8 +70,7 @@ export function buildRagPrompt(params: {
   const messages = [
     {
       role: "system" as const,
-      content:
-        "You are a health assistant. Answer the question based on the provided context. Cite snippets with [n] and list Sources.",
+      content: prompt.rag_prompt,
     },
     {
       role: "user" as const,

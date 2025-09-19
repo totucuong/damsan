@@ -54,7 +54,7 @@ export async function analyzeDocument(document: File): Promise<ParsedDocument> {
           content: [
             {
               type: "text",
-              text: prompt.system_prompt,
+              text: prompt.document_prompt,
             },
             {
               type: "image_url",
