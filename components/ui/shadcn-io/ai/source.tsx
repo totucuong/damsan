@@ -6,8 +6,17 @@ import {
   CollapsibleTrigger,
 } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
-import { BookIcon, ChevronDownIcon } from "lucide-react";
+import {
+  BookIcon,
+  ChevronDownIcon,
+  StickyNote as StickyNoteIcon,
+  TestTube as TestTubeIcon,
+  Stethoscope as StethoscopeIcon,
+  Pill as PillIcon,
+  FileQuestionMark as FileQuestionMarkIcon,
+} from "lucide-react";
 import type { ComponentProps } from "react";
+import type { DocumentType } from "@/lib/document_types";
 
 export type SourcesProps = ComponentProps<"div">;
 
@@ -54,9 +63,34 @@ export const SourcesContent = ({
   />
 );
 
-export type SourceProps = ComponentProps<"a">;
+export type SourceProps = ComponentProps<"a"> & {
+  sourceType?: DocumentType;
+};
 
-export const Source = ({ href, title, children, ...props }: SourceProps) => (
+function SourceIcon({ type }: { type?: DocumentType }) {
+  switch (type) {
+    case "handwritten_note":
+      return <StickyNoteIcon className="h-4 w-4" />;
+    case "lab_test":
+      return <TestTubeIcon className="h-4 w-4" />;
+    case "medical_prescription":
+      return <StethoscopeIcon className="h-4 w-4" />;
+    case "drug_package":
+      return <PillIcon className="h-4 w-4" />;
+    case "unknown":
+      return <FileQuestionMarkIcon className="h-4 w-4" />;
+    default:
+      return <BookIcon className="h-4 w-4" />;
+  }
+}
+
+export const Source = ({
+  href,
+  title,
+  children,
+  sourceType,
+  ...props
+}: SourceProps) => (
   <a
     className="flex items-center gap-2"
     href={href}
@@ -66,7 +100,7 @@ export const Source = ({ href, title, children, ...props }: SourceProps) => (
   >
     {children ?? (
       <>
-        <BookIcon className="h-4 w-4" />
+        <SourceIcon type={sourceType} />
         <span className="block font-medium">{title}</span>
       </>
     )}

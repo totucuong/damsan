@@ -47,6 +47,7 @@ export function ChatMessage({
                     key={c.id || i}
                     href={href || "#"}
                     title={title}
+                    sourceType={c.sourceType}
                     aria-label={c.preview ? `${title}: ${c.preview}` : title}
                   />
                 );

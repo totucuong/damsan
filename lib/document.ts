@@ -3,6 +3,7 @@
 import OpenAI from "openai";
 import { z } from "zod";
 import { prompt } from "./prompt";
+import { DOCUMENT_TYPES } from "./document_types";
 // Initialize OpenAI client
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -11,15 +12,7 @@ const openai = new OpenAI({
 // Define schema for validating the output of parsing user documents
 const ParsedDocumentSchema = z.object({
   metadata: z.string().describe("A detailed description of the document"),
-  type: z
-    .enum([
-      "handwritten_note",
-      "lab_test",
-      "medical_prescription",
-      "drug_package",
-      "unknown",
-    ])
-    .describe("The type of document parsed"),
+  type: z.enum(DOCUMENT_TYPES).describe("The type of document parsed"),
   content: z
     .any()
     .describe("The structured content extracted from the document"),

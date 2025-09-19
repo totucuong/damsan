@@ -1,4 +1,4 @@
-import { ParsedDocument } from "./document";
+import { DocumentType } from "./document_types";
 import { prompt } from "./prompt";
 export type Chunk = {
   content: string;
@@ -10,6 +10,7 @@ export type Retrieved = {
   content: string;
   source: string;
   score: number;
+  sourceType?: DocumentType;
 };
 
 export type Citation = {
@@ -17,6 +18,7 @@ export type Citation = {
   source: string;
   preview: string;
   score: number;
+  sourceType?: DocumentType;
 };
 
 function estimateTokens(text: string) {
@@ -81,7 +83,7 @@ export function buildRagPrompt(params: {
   return { messages };
 }
 
-export function textFromParsedDocument(doc: ParsedDocument): string {
+export function textFromParsedDocument(doc: { type?: DocumentType; metadata?: string; content: unknown }): string {
   // @TODO: use titoken?
   try {
     const header = `${doc.type?.toString?.() || "unknown"}\n${
