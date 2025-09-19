@@ -34,14 +34,15 @@ export async function loadMessages(userId: string): Promise<Message[]> {
       },
       orderBy: { timestamp: "asc" },
     })
-    .then((messages) => {
-      return messages.map((message) => ({
-        isUser: message.type === "HUMAN",
-        message: message.message,
-        timestamp: message.timestamp,
+    .then((rows) =>
+      rows.map((row) => ({
+        isUser: row.type === "HUMAN",
+        message: row.message,
+        timestamp: row.timestamp,
         isTyping: false,
-      }));
-    });
+        citations: (row.citations as unknown as Citation[] | undefined) || undefined,
+      }))
+    );
 }
 
 // try {
@@ -86,6 +87,9 @@ export async function saveMessages(messages: Message[], userId: string) {
           type: message.isUser ? "HUMAN" : "BOT",
           timestamp: message.timestamp,
           userId: userId,
+          ...(message.citations
+            ? { citations: message.citations as unknown as Prisma.InputJsonValue }
+            : {}),
         },
       });
 

@@ -33,6 +33,7 @@ model Message {
     userId    String
     user      User        @relation(fields: [userId], references: [id])
     File      File[]
+    citations Json?
 
     @@map("messages")
 }
