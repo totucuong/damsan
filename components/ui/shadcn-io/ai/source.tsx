@@ -20,6 +20,7 @@ import {
 import type { ComponentProps } from "react";
 import type { DocumentType } from "@/lib/document_types";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import ImagePreview from "@/components/citation/ImagePreview";
 
 export type SourcesProps = ComponentProps<"div">;
 
@@ -136,6 +137,13 @@ export const Source = ({
             <div className="truncate font-medium" title={title}>
               {title}
             </div>
+            {/* Image thumbnail, if available (Supabase storage or preview HTML) */}
+            <ImagePreview
+              filePath={fileUrl}
+              htmlHint={previewText}
+              alt={title}
+              caption={undefined}
+            />
             {previewText ? (
               <p className="mt-1 line-clamp-6 whitespace-pre-wrap text-xs text-muted-foreground">
                 {previewText}
