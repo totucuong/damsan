@@ -92,7 +92,7 @@ async function saveFiles(message: Message, messageId: string, userId: string) {
           const fileData = await uploadFile(file);
           return prisma.file.create({
             data: {
-              url: fileData.fullPath,
+              url: fileData.path.split("/").slice(1).join("/"), // remove user id prefix,
               owner_id: userId,
               message_id: messageId,
               metadata: message.documents?.[index].metadata ?? "",

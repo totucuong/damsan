@@ -61,7 +61,7 @@ export async function processUserMessage(
       ];
       await saveMessages([message, ...aiResponse], userId);
     } else {
-      // No files: answer via RAG
+      // No files: answer via RAG @TODO: what happen if the user asking while uploading files?
       const { answer, citations } = await answerWithRagPg({
         userId,
         question: message.message,
