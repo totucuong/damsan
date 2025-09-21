@@ -1,10 +1,9 @@
 "use server";
 
 import { createClient } from "@/utils/supabase/server";
-import { createClient as createAdmin } from "@supabase/supabase-js";
 /**
  * Create a short-lived signed URL for a private file in Supabase Storage.
- * @param path Path within the configured bucket (e.g. "user-id/filename.png")
+ * @param path Path within the configured bucket (i.e. "user-id/filename.png")
  * @param expiresIn Seconds until expiry (default 5 minutes)
  * @returns A signed URL string or null on failure
  */

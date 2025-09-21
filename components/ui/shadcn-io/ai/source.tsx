@@ -19,7 +19,11 @@ import {
 } from "lucide-react";
 import type { ComponentProps } from "react";
 import type { DocumentType } from "@/lib/document_types";
-import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
 import ImagePreview from "@/components/citation/ImagePreview";
 
 export type SourcesProps = ComponentProps<"div">;
@@ -145,11 +149,14 @@ export const Source = ({
               caption={undefined}
             />
             {previewText ? (
-              <p className="mt-1 line-clamp-6 whitespace-pre-wrap text-xs text-muted-foreground">
-                {previewText}
-              </p>
+              <div>
+                <h3 className="font-medium">Citation:</h3>
+                <p className="mt-1 line-clamp-6 whitespace-pre-wrap text-xs text-muted-foreground">
+                  {previewText}
+                </p>
+              </div>
             ) : null}
-            {contentHref ? (
+            {/* {contentHref ? (
               <div className="mt-2">
                 <a
                   className="text-xs font-medium text-primary underline underline-offset-2 hover:opacity-80"
@@ -160,7 +167,7 @@ export const Source = ({
                   Open source
                 </a>
               </div>
-            ) : null}
+            ) : null} */}
           </div>
         </div>
       </HoverCardContent>
