@@ -32,11 +32,11 @@ export default function Home() {
       <section className="container mx-auto px-6 pt-12 pb-20 text-center">
         <div className="mx-auto max-w-3xl">
           <h1 className="text-4xl sm:text-5xl font-bold tracking-wide text-slate-900">
-            Your health secretary
+            Your AI Health Secretary
           </h1>
           <p className="mt-5 text-lg text-slate-600">
-            Damsan helps you capture and organize your medical records and
-            prescriptions—fast, private, and effortless.
+            Turn your medical records into personalized health insights—private,
+            secure, and always learning about you.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" asChild>
