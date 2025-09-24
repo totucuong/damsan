@@ -48,7 +48,7 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 flex justify-center">
+        <div className="mt-16 -mx-6 flex justify-center sm:mx-0">
           <div className="relative w-full max-w-5xl sm:max-w-6xl lg:max-w-7xl aspect-[16/9] md:aspect-[21/10]">
             <Image
               src="/app.jpg"
