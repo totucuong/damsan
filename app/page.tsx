@@ -48,15 +48,15 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="mt-16 grid place-items-center">
-          <div className="relative w-full aspect-[16/9] md:aspect-[21/10]">
+        <div className="mt-16 flex justify-center">
+          <div className="relative w-full max-w-5xl sm:max-w-6xl lg:max-w-7xl aspect-[16/9] md:aspect-[21/10]">
             <Image
-              src="/app.png"
+              src="/app.jpg"
               alt="App preview"
               fill
               priority
-              sizes="(min-width: 1880px) 1800px, (min-width: 768px) 90vw, 100vw"
-              className="object-contain p-2 sm:p-4"
+              sizes="(min-width: 1880px) 1800px, (min-width: 1024px) 75vw, (min-width: 768px) 90vw, 100vw"
+              className="object-contain"
             />
           </div>
         </div>
