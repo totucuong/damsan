@@ -41,3 +41,9 @@ yarn-error.log*
 next-env.d.ts
 
 scripts
+
+# terraform
+*.tfstate
+*.tfstate.*
+.terraform/
+.terraform.lock.hcl
